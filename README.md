@@ -28,6 +28,7 @@ Following providers and products are listed in alphabetical order.
 - [Flightcontrol](https://www.flightcontrol.dev?ref=awesome-paas)
 - [Fly.io](https://fly.io)
 - [Heroku](https://www.heroku.com) - acquired by Salesforce.
+- [InstaPods](https://instapods.com)
 - [Google Cloud AppEngine](https://cloud.google.com/appengine)
 - [Google Cloud Run](https://cloud.google.com/run)
 - [Koyeb](https://www.koyeb.com)
