@@ -92,6 +92,7 @@ Following providers and products are listed in alphabetical order.
 - [Openshift](https://www.redhat.com/en/technologies/cloud-computing/openshift)
 - [Otomi](https://otomi.io/)
 - [Piku]( https://github.com/piku/piku)
+- [Podi](https://github.com/coderofsalvation/podi)
 - [Porter](https://porter.run)
 - [Qovery](https://www.qovery.com/)
 - [Setops](https://www.setops.co/)
