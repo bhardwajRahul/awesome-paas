@@ -16,7 +16,7 @@ Following providers and products are listed in alphabetical order.
 - [Aptible](https://aptible.com)
 - [AWS App Runner](https://aws.amazon.com/apprunner)
 - [AWS ECS](https://aws.amazon.com/ecs)
-- [AZIN](https://azin.run) - BYOC deployment platform. Push code, deploy to your own GCP account (AWS and Azure on roadmap). Zero Kubernetes config required.
+- [AZIN](https://azin.run)
 - [Backery](https://backery.io/)
 - [Clever Cloud](https://www.clever-cloud.com/)
 - [Cloud 66](https://www.cloud66.com/) on your own cloud or server. 
