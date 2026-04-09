@@ -40,6 +40,7 @@ Following providers and products are listed in alphabetical order.
 - [Railway](https://railway.app/)
 - [Render](https://render.com)
 - [Sliplane.io](https://sliplane.io)
+- [SnapDeploy](https://snapdeploy.dev) - Docker-native container hosting with auto-sleep/wake, GitHub auto-deploy, framework detection, managed databases, and free tier.
 - [Supabase.io](https://github.com/supabase/supabase)
 - [TinyFunction](https://www.tinyfunction.com/)
 - [TinyStacks](https://www.tinystacks.com/)
