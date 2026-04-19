@@ -37,6 +37,7 @@ Following providers and products are listed in alphabetical order.
 - [platformOS](https://platformos.com)
 - [Platform.sh](https://platform.sh)
 - [Ploi](https://ploi.io)
+- [Qovery](https://www.qovery.com/) - Enterprise Kubernetes management platform. Deploy applications, databases, Helm charts, and Terraform modules on AWS EKS, GCP GKE, Azure AKS, and Scaleway. Cost-efficient GPU scheduling for AI/ML workloads. Includes [Terraform provider](https://registry.terraform.io/providers/Qovery/qovery/latest/docs), CLI, API, [MCP Server](https://mcp.qovery.com/mcp), and [AI Agent Skill](https://github.com/Qovery/qovery-skills).
 - [Railway](https://railway.app/)
 - [Render](https://render.com)
 - [Sliplane.io](https://sliplane.io)
