@@ -34,6 +34,7 @@ Following providers and products are listed in alphabetical order.
 - [Google Cloud Run](https://cloud.google.com/run)
 - [Koyeb](https://www.koyeb.com)
 - [MicroCloud](https://canonical.com/microcloud)
+- [Ownkube](https://ownkube.io) in your own AWS account on k3s or EKS.
 - [platformOS](https://platformos.com)
 - [Platform.sh](https://platform.sh)
 - [Ploi](https://ploi.io)
