@@ -28,6 +28,7 @@ Following providers and products are listed in alphabetical order.
 - [dotCloud](https://www.docker.com/docker-news-and-press/dotcloud-inc-now-docker-inc)
 - [Flightcontrol](https://www.flightcontrol.dev?ref=awesome-paas)
 - [Fly.io](https://fly.io)
+- [France Nuage](https://france-nuage.fr) - Sovereign open-source cloud (SSPL-1.0) hosted 100% in France; managed hosting of open-source apps (Grafana, Matomo, Odoo...) and S3 object storage.
 - [Heroku](https://www.heroku.com) - acquired by Salesforce.
 - [InstaPods](https://instapods.com)
 - [Google Cloud AppEngine](https://cloud.google.com/appengine)
