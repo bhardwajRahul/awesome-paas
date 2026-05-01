@@ -43,6 +43,7 @@ Following providers and products are listed in alphabetical order.
 - [Railway](https://railway.app/)
 - [Render](https://render.com)
 - [Sliplane.io](https://sliplane.io)
+- [SnapDeploy](https://snapdeploy.dev) Deploy for free, pay only when you need always on.
 - [Supabase.io](https://github.com/supabase/supabase)
 - [TinyFunction](https://www.tinyfunction.com/)
 - [TinyStacks](https://www.tinystacks.com/)
