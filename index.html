@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The PaaS Landscape — Awesome PaaS</title>
+<meta name="description" content="A curated landscape of PaaS, CaaS, Jamstack, ADN, self-hosted PaaS, and Cloud IDE platforms.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2316140f'/><rect x='6' y='8' width='20' height='1.5' fill='%234f3df0'/><rect x='6' y='12' width='16' height='1.5' fill='%230d8f6f'/><rect x='6' y='16' width='12' height='1.5' fill='%23c84922'/><rect x='6' y='20' width='8' height='1.5' fill='%231d6fd6'/><rect x='6' y='24' width='4' height='1.5' fill='%23a87a14'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['"Inter Tight"', 'system-ui', 'sans-serif'],
+          serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        },
+        colors: {
+          paper: '#fafaf7',
+          paper2: '#f3f1ea',
+          ink: {
+            900: '#16140f',
+            700: '#3a3830',
+            500: '#6b685c',
+            400: '#8e8b7d',
+            300: '#b6b2a0',
+          },
+          rule: {
+            DEFAULT: '#e9e6dc',
+            strong: '#cfcab8',
+          },
+          brand: {
+            indigo: '#4f3df0',
+            green: '#0d8f6f',
+            rust: '#c84922',
+            azure: '#1d6fd6',
+            ochre: '#a87a14',
+            plum: '#7a3aa6',
+          },
+        },
+        letterSpacing: {
+          tightest: '-0.04em',
+        },
+      }
+    },
+    corePlugins: { preflight: true }
+  }
+</script>
+<style>
+  /* Force sharp corners across the entire page — design intent. */
+  *, *::before, *::after { border-radius: 0 !important; }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-feature-settings: "ss01", "cv11", "cv05";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* paper grain — subtle, warm */
+  .grain::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.45;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.07 0 0 0 0 0.05 0 0 0 0 0.035 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    z-index: 0;
+  }
+
+  .serif-italic { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+  .nums { font-variant-numeric: tabular-nums; font-feature-settings: "tnum", "lnum"; }
+  .smallcaps { font-variant-caps: all-small-caps; letter-spacing: 0.18em; }
+
+  /* hide rail scrollbar */
+  .rail::-webkit-scrollbar { width: 0; height: 0; }
+
+  /* tile interactions */
+  .tile { transition: background-color .18s cubic-bezier(.2,.7,.2,1), border-color .18s, color .15s; }
+  .tile:hover { background-color: #ffffff; border-color: #16140f; z-index: 2; }
+  .tile:hover .tile-arrow { opacity: 1; transform: translate(2px, -2px); }
+  .tile:hover .tile-name { color: #16140f; }
+  .tile-arrow { transition: opacity .18s ease, transform .18s ease; }
+
+  /* hairline drafting corner ticks on hover — finesse */
+  .tile { position: relative; }
+  .tile::before, .tile::after {
+    content: "";
+    position: absolute;
+    width: 7px; height: 7px;
+    border-color: #16140f;
+    opacity: 0;
+    transition: opacity .15s ease;
+    pointer-events: none;
+  }
+  .tile::before { top: -1px; left: -1px; border-top: 1px solid; border-left: 1px solid; }
+  .tile::after  { bottom: -1px; right: -1px; border-bottom: 1px solid; border-right: 1px solid; }
+  .tile:hover::before, .tile:hover::after { opacity: 1; }
+
+  /* underline animation on inline links */
+  .ulink {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    padding-bottom: 1px;
+    transition: background-size .25s ease;
+  }
+  .ulink:hover { background-size: 100% 2px; }
+
+  /* search */
+  .focus-ring:focus { outline: none; border-color: #16140f; }
+
+  /* chips: sharp, newspaper-style */
+  .chip { transition: background-color .15s, color .15s, border-color .15s; }
+  .chip:hover { border-color: #16140f; color: #16140f; }
+  .chip[data-active="true"] {
+    background: #16140f;
+    color: #fafaf7;
+    border-color: #16140f;
+  }
+  .chip[data-active="true"] .chip-count { color: #b6b2a0; }
+
+  /* rail */
+  .rail-link[data-active="true"] { color: #16140f; }
+  .rail-link[data-active="true"] .rail-bullet { transform: scale(2); }
+  .rail-link[data-active="true"] .rail-num { color: #16140f; }
+
+  /* drop cap — editorial finesse */
+  .dropcap::first-letter {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 2.6em;
+    line-height: 0.85;
+    float: left;
+    padding: 0.06em 0.1em 0 0;
+    color: #16140f;
+  }
+
+  /* line clamp helper */
+  .clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* logo hover: subtle layer shift */
+  .logo-stack rect { transition: transform .35s cubic-bezier(.2,.7,.2,1); transform-origin: left center; }
+  a.brand:hover .logo-stack rect:nth-child(2) { transform: scaleX(1.15); }
+  a.brand:hover .logo-stack rect:nth-child(3) { transform: scaleX(0.85); }
+  a.brand:hover .logo-stack rect:nth-child(4) { transform: scaleX(1.25); }
+  a.brand:hover .logo-stack rect:nth-child(5) { transform: scaleX(0.7); }
+  a.brand:hover .logo-stack rect:nth-child(6) { transform: scaleX(1.5); }
+
+  /* selection */
+  ::selection { background: #16140f; color: #fafaf7; }
+
+  /* tighter mono kerning at small sizes */
+  .mono-tight { letter-spacing: -0.02em; }
+
+  /* ===== command palette (⌘K) ===== */
+  .palette-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(22, 20, 15, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s ease;
+  }
+  .palette-backdrop[data-open="true"] { opacity: 1; pointer-events: auto; }
+
+  .palette {
+    position: fixed;
+    top: 12vh; left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    width: min(640px, calc(100vw - 32px));
+    max-height: 70vh;
+    background: #fafaf7;
+    border: 1px solid #16140f;
+    box-shadow: 0 24px 60px -20px rgba(22, 20, 15, 0.35), 0 8px 20px -6px rgba(22, 20, 15, 0.18);
+    z-index: 101;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s ease, transform .15s ease;
+    display: flex; flex-direction: column;
+  }
+  .palette[data-open="true"] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  .palette-input {
+    flex: 0 0 auto;
+    border: 0;
+    border-bottom: 1px solid #e9e6dc;
+    background: transparent;
+    padding: 16px 18px 16px 46px;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 15px;
+    color: #16140f;
+    outline: none;
+  }
+  .palette-input::placeholder { color: #8e8b7d; }
+  .palette-list {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 6px 0;
+  }
+  .palette-list::-webkit-scrollbar { width: 8px; }
+  .palette-list::-webkit-scrollbar-thumb { background: #cfcab8; }
+  .palette-list::-webkit-scrollbar-track { background: transparent; }
+
+  .palette-group-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #8e8b7d;
+    padding: 10px 18px 6px;
+  }
+  .palette-item {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 18px;
+    cursor: pointer;
+    user-select: none;
+    border-left: 2px solid transparent;
+  }
+  .palette-item[data-active="true"] {
+    background: #16140f;
+    color: #fafaf7;
+    border-left-color: #4f3df0;
+  }
+  .palette-item[data-active="true"] .palette-domain { color: #b6b2a0; }
+  .palette-item[data-active="true"] .palette-cat { color: #b6b2a0; }
+  .palette-item[data-active="true"] .palette-arrow { opacity: 1; }
+  .palette-favicon {
+    width: 20px; height: 20px;
+    background: #ffffff;
+    border: 1px solid #e9e6dc;
+    display: grid; place-items: center;
+    overflow: hidden;
+  }
+  .palette-favicon img { width: 100%; height: 100%; object-fit: contain; padding: 2px; }
+  .palette-favicon span { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; color: #3a3830; }
+  .palette-name {
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.25;
+    color: inherit;
+  }
+  .palette-meta { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+  .palette-domain {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #8e8b7d;
+    letter-spacing: -0.02em;
+  }
+  .palette-cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #8e8b7d;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+  .palette-arrow { opacity: 0; transition: opacity .1s; }
+  .palette-mark {
+    background: #fff8b8;
+    color: inherit;
+    padding: 0 1px;
+  }
+  .palette-item[data-active="true"] .palette-mark {
+    background: #4f3df0;
+    color: #fafaf7;
+  }
+  .palette-empty {
+    padding: 36px 18px;
+    text-align: center;
+    color: #8e8b7d;
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    font-style: italic;
+  }
+  .palette-foot {
+    flex: 0 0 auto;
+    border-top: 1px solid #e9e6dc;
+    padding: 9px 18px;
+    display: flex;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #6b685c;
+    background: #f3f1ea;
+  }
+  .palette-foot .k {
+    border: 1px solid #cfcab8;
+    background: #fafaf7;
+    padding: 1px 5px;
+    margin-right: 4px;
+    color: #3a3830;
+  }
+  .palette-search-icon {
+    position: absolute;
+    left: 18px;
+    top: 19px;
+    color: #8e8b7d;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body class="bg-paper text-ink-900 font-sans antialiased grain">
+
+<!-- ===== Command Palette (⌘K) ===== -->
+<div id="palette-backdrop" class="palette-backdrop" aria-hidden="true"></div>
+<div id="palette" class="palette" role="dialog" aria-modal="true" aria-labelledby="palette-input" aria-hidden="true">
+  <div style="position: relative;">
+    <svg class="palette-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+    <input id="palette-input" class="palette-input" type="text" autocomplete="off" placeholder="Jump to a platform…" style="width: 100%;" />
+  </div>
+  <div id="palette-list" class="palette-list" role="listbox"></div>
+  <div class="palette-foot">
+    <span><span class="k">↑</span><span class="k">↓</span> navigate</span>
+    <span><span class="k">↵</span> open</span>
+    <span><span class="k">esc</span> close</span>
+    <span style="margin-left: auto;">⌘K palette</span>
+  </div>
+</div>
+
+
+<!-- ===== TOP BAR ===== -->
+<header class="relative z-30 border-b border-rule bg-paper/85 backdrop-blur sticky top-0">
+  <div class="mx-auto max-w-[1400px] px-6 lg:px-10 h-14 flex items-center gap-6">
+    <a href="#" class="brand flex items-center gap-2.5 group">
+      <!-- Logo: stacked layers in 5 accent colors -->
+      <svg class="logo-stack" width="28" height="28" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="0" y="0" width="32" height="32" fill="#16140f"/>
+        <rect x="6" y="7"  width="20" height="2" fill="#4f3df0"/>
+        <rect x="6" y="11" width="16" height="2" fill="#0d8f6f"/>
+        <rect x="6" y="15" width="12" height="2" fill="#c84922"/>
+        <rect x="6" y="19" width="8"  height="2" fill="#1d6fd6"/>
+        <rect x="6" y="23" width="4"  height="2" fill="#a87a14"/>
+      </svg>
+      <span class="font-mono mono-tight font-semibold text-[14px] leading-none text-ink-900">
+        <span>awesome</span><span class="text-brand-indigo">-paas</span>
+      </span>
+    </a>
+    <span class="hidden md:inline-block text-ink-300">/</span>
+    <span class="hidden md:inline-block font-mono mono-tight text-[10.5px] uppercase tracking-[0.22em] text-ink-500">The Landscape · Vol. 01</span>
+    <div class="flex-1"></div>
+    <nav class="hidden lg:flex items-center gap-0 text-[13px] divide-x divide-rule">
+      <a href="#cat-paas" class="px-3 py-1.5 text-ink-700 hover:text-ink-900 hover:bg-paper2">PaaS</a>
+      <a href="#cat-sandbox" class="px-3 py-1.5 text-ink-700 hover:text-ink-900 hover:bg-paper2">Sandbox</a>
+      <a href="#cat-jamstack" class="px-3 py-1.5 text-ink-700 hover:text-ink-900 hover:bg-paper2">Jamstack</a>
+      <a href="#cat-adn" class="px-3 py-1.5 text-ink-700 hover:text-ink-900 hover:bg-paper2">ADN</a>
+      <a href="#cat-self" class="px-3 py-1.5 text-ink-700 hover:text-ink-900 hover:bg-paper2">Self-Hosted</a>
+      <a href="#cat-ide" class="px-3 py-1.5 text-ink-700 hover:text-ink-900 hover:bg-paper2">Cloud IDE</a>
+    </nav>
+    <a href="https://github.com/debarshibasak/awesome-paas" target="_blank" rel="noopener" class="group inline-flex items-stretch text-[13px] font-medium text-ink-900 border border-ink-900 transition-colors">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 group-hover:bg-ink-900 group-hover:text-paper transition-colors">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55 0-.27-.01-1-.02-1.96-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.27-5.24-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.17.92-.26 1.9-.39 2.88-.39.98 0 1.96.13 2.88.39 2.2-1.48 3.16-1.17 3.16-1.17.62 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.65.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+        <span>Star</span>
+      </span>
+      <span class="inline-flex items-center px-2.5 py-1.5 border-l border-ink-900 font-mono mono-tight nums text-[12px] bg-paper2">602</span>
+    </a>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-10 pt-14 lg:pt-20 pb-10">
+  <div class="grid lg:grid-cols-12 gap-10 items-end">
+    <div class="lg:col-span-9">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="font-mono mono-tight text-[10.5px] uppercase tracking-[0.24em] text-ink-500">№ 01 &nbsp;·&nbsp; Edition <span class="nums">2026</span></span>
+        <span class="h-px flex-1 bg-rule max-w-32"></span>
+        <span class="font-mono mono-tight text-[10.5px] nums text-ink-500"><span id="stat-total">—</span> platforms · <span id="stat-cats">—</span> categories</span>
+      </div>
+      <h1 class="font-serif font-normal tracking-tightest text-[clamp(34px,5vw,68px)] leading-[1.02] text-ink-900 max-w-[20ch]">
+        The platforms <span class="serif-italic">that ship</span> your code, <span class="text-ink-500">mapped on one page.</span>
+      </h1>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="text-[14px] leading-relaxed text-ink-700 max-w-md border-l border-ink-900 pl-5">
+        From hosted PaaS and CaaS to sandboxes, Jamstack edges, ADN runtimes, self-hosted control planes, and cloud IDEs — every platform from the open <a href="https://github.com/debarshibasak/awesome-paas" class="ulink decoration-brand-indigo text-ink-900">awesome-paas</a> list, organized as a single navigable landscape.
+      </p>
+    </div>
+  </div>
+
+  <!-- Stats strip -->
+  <dl class="mt-12 grid grid-cols-2 md:grid-cols-4 border border-ink-900 -mr-px">
+    <div class="px-5 py-4 border-r border-ink-900 -mr-px">
+      <dt class="font-mono mono-tight text-[10px] uppercase tracking-[0.22em] text-ink-500 mb-1.5">Platforms</dt>
+      <dd class="flex items-baseline gap-2">
+        <span class="font-serif text-[44px] leading-none tracking-tightest text-ink-900 nums" id="stat-total-big">—</span>
+        <span class="serif-italic text-[18px] text-ink-400">listed</span>
+      </dd>
+    </div>
+    <div class="px-5 py-4 border-r border-ink-900 -mr-px">
+      <dt class="font-mono mono-tight text-[10px] uppercase tracking-[0.22em] text-ink-500 mb-1.5">Categories</dt>
+      <dd class="flex items-baseline gap-2">
+        <span class="font-serif text-[44px] leading-none tracking-tightest text-ink-900 nums" id="stat-cats-big">—</span>
+        <span class="serif-italic text-[18px] text-ink-400">distinct</span>
+      </dd>
+    </div>
+    <div class="px-5 py-4 border-r border-ink-900 -mr-px">
+      <dt class="font-mono mono-tight text-[10px] uppercase tracking-[0.22em] text-ink-500 mb-1.5">License</dt>
+      <dd class="flex items-baseline gap-2">
+        <span class="font-serif text-[44px] leading-none tracking-tightest text-ink-900">MIT</span>
+        <span class="serif-italic text-[18px] text-ink-400">open</span>
+      </dd>
+    </div>
+    <div class="px-5 py-4">
+      <dt class="font-mono mono-tight text-[10px] uppercase tracking-[0.22em] text-ink-500 mb-1.5">Contributors</dt>
+      <dd class="flex items-baseline gap-2">
+        <span class="font-serif text-[44px] leading-none tracking-tightest text-ink-900 nums" id="stat-contrib">42</span>
+        <span class="serif-italic text-[18px] text-ink-400">contributors</span>
+      </dd>
+    </div>
+  </dl>
+</section>
+
+<!-- ===== TOOLBAR ===== -->
+<section class="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-10 pb-8">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-y border-ink-900 py-3.5">
+    <div class="relative flex-1 max-w-md">
+      <svg class="absolute left-2 top-1/2 -translate-y-1/2 text-ink-500" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+      <input id="search" type="text" autocomplete="off" placeholder="Search 110+ platforms…"
+        class="focus-ring w-full bg-transparent border-b border-rule pl-7 pr-10 py-1.5 text-[14px] placeholder:text-ink-400 transition-colors">
+      <span id="search-kbd" class="hidden md:inline-flex items-center gap-1 absolute right-1 top-1/2 -translate-y-1/2 font-mono mono-tight text-[10px] text-ink-500 border border-rule-strong px-1.5 leading-[18px]"></span>
+    </div>
+    <div id="chips" class="flex flex-wrap items-center gap-0 -ml-px"></div>
+  </div>
+</section>
+
+<!-- ===== LANDSCAPE BODY ===== -->
+<div class="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-10 pb-32">
+  <div class="grid lg:grid-cols-12 gap-10">
+
+    <!-- Sticky rail -->
+    <aside class="hidden lg:block lg:col-span-3 xl:col-span-2">
+      <div class="sticky top-20 rail max-h-[calc(100vh-6rem)] overflow-y-auto pr-2">
+        <div class="font-mono mono-tight text-[10px] uppercase tracking-[0.24em] text-ink-500 mb-4 pb-2 border-b border-rule">Index</div>
+        <ol id="rail" class="space-y-1"></ol>
+        <div class="mt-10 pt-6 border-t border-rule">
+          <p class="font-serif text-[22px] leading-tight text-ink-900 mb-2">Missing <span class="serif-italic">one?</span></p>
+          <p class="dropcap text-[12.5px] text-ink-700 leading-relaxed mb-3">PRs are welcome — the list lives in a plain <span class="font-mono mono-tight text-ink-900">README.md</span> at the root.</p>
+          <a href="https://github.com/debarshibasak/awesome-paas/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-[12px] font-medium text-brand-indigo hover:underline">
+            Contribute <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Categories -->
+    <main id="landscape" class="lg:col-span-9 xl:col-span-10 space-y-20"></main>
+  </div>
+  <div id="empty" class="hidden text-center py-20 text-ink-500 font-serif text-[28px]">
+    No platforms match <span id="empty-q" class="serif-italic text-ink-900"></span>.
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="relative z-10 border-t border-ink-900">
+  <div class="mx-auto max-w-[1400px] px-6 lg:px-10 py-14 grid md:grid-cols-12 gap-10">
+    <div class="md:col-span-7">
+      <p class="font-serif text-[clamp(36px,5vw,56px)] leading-[0.95] tracking-tightest mb-4">A <span class="serif-italic text-brand-indigo">living</span> landscape.</p>
+      <p class="text-[14px] text-ink-700 max-w-lg leading-relaxed">Curated under the MIT license. Inspired by <a href="https://github.com/avelino/awesome-go" class="ulink decoration-ink-300" target="_blank" rel="noopener">awesome-go</a>. Logos via <span class="font-mono mono-tight text-[12px]">favicon</span> — credit to each platform's brand.</p>
+    </div>
+    <div class="md:col-span-3 text-[12px] text-ink-500 space-y-1.5">
+      <div class="font-mono mono-tight uppercase tracking-[0.22em] text-ink-400 mb-3 pb-2 border-b border-rule">Repository</div>
+      <a href="https://github.com/debarshibasak/awesome-paas" class="block hover:text-ink-900" target="_blank" rel="noopener">github.com/<wbr>debarshibasak/<wbr>awesome-paas</a>
+      <a href="https://github.com/debarshibasak/awesome-paas/blob/main/CONTRIBUTING.md" class="block hover:text-ink-900" target="_blank" rel="noopener">Contributing guidelines</a>
+      <a href="https://github.com/debarshibasak/awesome-paas/blob/main/LICENSE" class="block hover:text-ink-900" target="_blank" rel="noopener">MIT license</a>
+    </div>
+    <div class="md:col-span-2 text-[12px] text-ink-500 space-y-1.5">
+      <div class="font-mono mono-tight uppercase tracking-[0.22em] text-ink-400 mb-3 pb-2 border-b border-rule">Build</div>
+      <div class="font-mono mono-tight nums text-ink-700" id="build-date">—</div>
+      <div class="font-mono mono-tight nums text-ink-400" id="build-time">—</div>
+    </div>
+  </div>
+
+  <!-- Colophon strip — finesse: full-bleed with stacked layers echo of logo -->
+  <div class="border-t border-rule bg-paper2/60">
+    <div class="mx-auto max-w-[1400px] px-6 lg:px-10 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="0" y="0" width="32" height="32" fill="#16140f"/>
+          <rect x="6" y="7"  width="20" height="2" fill="#4f3df0"/>
+          <rect x="6" y="11" width="16" height="2" fill="#0d8f6f"/>
+          <rect x="6" y="15" width="12" height="2" fill="#c84922"/>
+          <rect x="6" y="19" width="8"  height="2" fill="#1d6fd6"/>
+          <rect x="6" y="23" width="4"  height="2" fill="#a87a14"/>
+        </svg>
+        <span class="font-mono mono-tight text-[10.5px] uppercase tracking-[0.22em] text-ink-500">
+          <span class="font-semibold text-ink-700">awesome-paas</span> &nbsp;·&nbsp; © <span class="nums" id="foot-year">2026</span>
+        </span>
+      </div>
+      <div class="font-mono mono-tight text-[10.5px] uppercase tracking-[0.22em] text-ink-500">
+        Last rendered <span class="text-ink-700 nums" id="foot-date">—</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const DATA = {
+  categories: [
+    {
+      id: "paas",
+      num: "01",
+      title: "PaaS or CaaS",
+      blurb: "Managed Platform-as-a-Service and Container-as-a-Service.",
+      accent: "indigo",
+      items: [
+        ["Appliku", "https://appliku.com"],
+        ["apply.build", "https://apply.build"],
+        ["Aptible", "https://aptible.com"],
+        ["AWS App Runner", "https://aws.amazon.com/apprunner"],
+        ["AWS ECS", "https://aws.amazon.com/ecs"],
+        ["AZIN", "https://azin.run"],
+        ["Backery", "https://backery.io/"],
+        ["Clever Cloud", "https://www.clever-cloud.com/"],
+        ["Cloud 66", "https://www.cloud66.com/", "On your own cloud or server."],
+        ["Coherence", "https://www.withcoherence.com/?ref=awesome-paas", "In your own AWS or GCP account."],
+        ["Cyclic", "https://www.cyclic.sh/"],
+        ["Digitalocean App Platform", "https://www.digitalocean.com/products/app-platform"],
+        ["Diploi", "https://diploi.com/"],
+        ["Back4app Web Deployment", "https://www.back4app.com/web-deployment-platform"],
+        ["dotCloud", "https://www.docker.com/docker-news-and-press/dotcloud-inc-now-docker-inc"],
+        ["Flightcontrol", "https://www.flightcontrol.dev?ref=awesome-paas"],
+        ["Fly.io", "https://fly.io"],
+        ["France Nuage", "https://france-nuage.fr", "Sovereign open-source cloud, hosted in France."],
+        ["Heroku", "https://www.heroku.com", "Acquired by Salesforce."],
+        ["InstaPods", "https://instapods.com"],
+        ["Google Cloud AppEngine", "https://cloud.google.com/appengine"],
+        ["Google Cloud Run", "https://cloud.google.com/run"],
+        ["Koyeb", "https://www.koyeb.com"],
+        ["MicroCloud", "https://canonical.com/microcloud"],
+        ["Ownkube", "https://ownkube.io", "In your own AWS account on k3s or EKS."],
+        ["platformOS", "https://platformos.com"],
+        ["Platform.sh", "https://platform.sh"],
+        ["Ploi", "https://ploi.io"],
+        ["Qovery", "https://www.qovery.com/", "Enterprise Kubernetes — EKS, GKE, AKS, Scaleway."],
+        ["Railway", "https://railway.app/"],
+        ["Render", "https://render.com"],
+        ["Sliplane.io", "https://sliplane.io"],
+        ["SnapDeploy", "https://snapdeploy.dev", "Deploy free, pay only when always on."],
+        ["Supabase.io", "https://github.com/supabase/supabase"],
+        ["TinyFunction", "https://www.tinyfunction.com/"],
+        ["TinyStacks", "https://www.tinystacks.com/"],
+        ["Zeabur", "https://zeabur.com"],
+        ["Zimki", "https://www.slideshare.net/swardley/zimki-2006", "Original PaaS from Canon."]
+      ]
+    },
+    {
+      id: "sandbox",
+      num: "02",
+      title: "Sandboxes & Harnesses",
+      blurb: "Ephemeral, code-execution sandboxes and AI-grade compute harnesses.",
+      accent: "plum",
+      items: [
+        ["Adaptive", "https://www.adaptive.live/"],
+        ["Beam Cloud", "https://www.beam.cloud/"],
+        ["Daytona", "https://www.daytona.io/"],
+        ["E2B", "https://e2b.dev/"],
+        ["Modal", "https://modal.com"],
+        ["Runloop", "https://www.runloop.ai/"]
+      ]
+    },
+    {
+      id: "jamstack",
+      num: "03",
+      title: "Jamstack",
+      blurb: "Static-first hosting, edge CDNs, and frontend deployment.",
+      accent: "green",
+      items: [
+        ["AWS Amplify", "https://aws.amazon.com/amplify"],
+        ["Cloudflare Pages", "https://pages.cloudflare.com/"],
+        ["Gatsby Cloud", "https://www.gatsbyjs.com/products/cloud/"],
+        ["Github Pages", "https://pages.github.com/"],
+        ["GitLab Pages", "https://docs.gitlab.com/ee/user/project/pages/"],
+        ["Glitch", "https://glitch.com/"],
+        ["layer0", "https://www.layer0.co"],
+        ["Netlify", "https://www.netlify.com"],
+        ["Vercel", "https://vercel.com"]
+      ]
+    },
+    {
+      id: "adn",
+      num: "04",
+      title: "Application Delivery Network",
+      blurb: "Function-as-a-Service and edge runtimes that deliver code globally.",
+      accent: "rust",
+      items: [
+        ["AWS Lambda", "https://aws.amazon.com/lambda/"],
+        ["Azure Functions", "https://docs.microsoft.com/en-us/azure/azure-functions/"],
+        ["Cloudflare Workers", "https://workers.cloudflare.com/"],
+        ["Deno Deploy", "https://deno.com/deploy"],
+        ["Suborbital Atmo", "https://github.com/suborbital/atmo"]
+      ]
+    },
+    {
+      id: "self",
+      num: "05",
+      title: "Self-Hosted PaaS",
+      blurb: "Open-source and BYO-cloud platforms that emulate PaaS on your infra.",
+      accent: "azure",
+      items: [
+        ["Argonaut", "https://argonaut.dev/"],
+        ["Azure Krustlet", "https://krustlet.dev/"],
+        ["BoltOps", "https://www.boltops.com/"],
+        ["Canine", "https://canine.sh/"],
+        ["Caprover", "https://caprover.com/"],
+        ["Cloud Foundry", "https://www.cloudfoundry.org/"],
+        ["Coolify", "https://coolify.io/"],
+        ["Deckrun", "https://deckrun.com/"],
+        ["Digger", "https://digger.dev/"],
+        ["Disco", "https://disco.cloud/"],
+        ["dyrector.io", "https://dyrector.io/"],
+        ["Docker Swarm", "https://docs.docker.com/engine/swarm/"],
+        ["Dokku", "https://dokku.com"],
+        ["Dokploy", "https://github.com/dokploy/dokploy"],
+        ["Flynn", "https://github.com/flynn/flynn"],
+        ["Hatchbox", "https://www.hatchbox.io"],
+        ["Hephy", "https://web.teamhephy.com/"],
+        ["Humanitec", "https://humanitec.com/"],
+        ["Kubeless", "https://kubeless.io/"],
+        ["Komodor", "https://komodor.com/"],
+        ["Kubernetes", "https://kubernetes.io/"],
+        ["Kubero", "https://github.com/kubero-dev/kubero"],
+        ["Knative", "https://knative.dev/docs/"],
+        ["Linx", "https://linx.software"],
+        ["Northflank", "https://northflank.com/"],
+        ["Openfaas", "https://www.openfaas.com/"],
+        ["Openshift", "https://www.redhat.com/en/technologies/cloud-computing/openshift"],
+        ["Otomi", "https://otomi.io/"],
+        ["Piku", "https://github.com/piku/piku"],
+        ["Podi", "https://github.com/coderofsalvation/podi"],
+        ["Porter", "https://porter.run"],
+        ["Qovery", "https://www.qovery.com/"],
+        ["Setops", "https://www.setops.co/"],
+        ["Skaffold", "https://skaffold.dev/"],
+        ["Spacecloud", "https://space-cloud.io/"],
+        ["Spaceship", "https://spaceship.run"],
+        ["Stacksnap", "https://klo.dev/stacksnap"],
+        ["TrueFoundry", "https://truefoundry.com"],
+        ["Uncloud", "https://uncloud.run"],
+        ["VMware Tanzu", "https://tanzu.vmware.com"],
+        ["ZaneOps", "https://zaneops.dev"],
+        ["Zeabur", "https://zeabur.com"],
+        ["Zeet", "https://zeet.co"]
+      ]
+    },
+    {
+      id: "ide",
+      num: "06",
+      title: "Cloud IDE & Developer Workspaces",
+      blurb: "Browser-based dev environments and remote workspace platforms.",
+      accent: "ochre",
+      items: [
+        ["Adaptive", "https://www.adaptive.live/"],
+        ["Cocalc", "https://cocalc.com/"],
+        ["Codepen", "https://codepen.io/"],
+        ["Coder.com", "https://coder.com/"],
+        ["Codesandbox", "https://codesandbox.io/"],
+        ["Codetasty", "https://codetasty.com/"],
+        ["Cloud9", "https://aws.amazon.com/cloud9/"],
+        ["Eclipse Che", "https://www.eclipse.org/che/"],
+        ["Encore", "https://encore.dev/"],
+        ["Gitpod", "https://www.gitpod.io/"],
+        ["Okteto", "https://okteto.com/"],
+        ["Paizacloud", "https://paiza.cloud/en/jupyter-notebook-online"],
+        ["Release", "https://release.com/"],
+        ["Replit", "https://replit.com/"],
+        ["Signadot", "https://www.signadot.com/"],
+        ["Stackblitz", "https://stackblitz.com/"],
+        ["Sourcelair", "https://ide.sourcelair.com/home"]
+      ]
+    }
+  ]
+};
+
+const accentClass = {
+  indigo: { dot: 'bg-brand-indigo', text: 'text-brand-indigo' },
+  plum:   { dot: 'bg-brand-plum',   text: 'text-brand-plum'   },
+  green:  { dot: 'bg-brand-green',  text: 'text-brand-green'  },
+  rust:   { dot: 'bg-brand-rust',   text: 'text-brand-rust'   },
+  azure:  { dot: 'bg-brand-azure',  text: 'text-brand-azure'  },
+  ochre:  { dot: 'bg-brand-ochre',  text: 'text-brand-ochre'  },
+};
+
+function domainOf(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ''); }
+  catch { return ''; }
+}
+function favicon(url) {
+  const d = domainOf(url);
+  return d ? `https://www.google.com/s2/favicons?domain=${d}&sz=64` : '';
+}
+function initials(name) {
+  return name.replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).map(s => s[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
+}
+
+function setBuildDate() {
+  const now = new Date();
+  const fmtDate = now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+  const fmtTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
+  const iso = now.toISOString().slice(0, 10);
+  const day = String(now.getDate()).padStart(2, '0');
+  const monShort = now.toLocaleDateString('en-US', { month: 'short' }).toLowerCase();
+
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  set('build-date', iso);
+  set('build-time', fmtTime);
+  set('foot-date', fmtDate);
+  set('foot-year', now.getFullYear());
+  set('stat-updated', day);
+  set('stat-updated-month', `${monShort} ’${String(now.getFullYear()).slice(-2)}`);
+}
+
+
+function render() {
+  const main = document.getElementById('landscape');
+  const chips = document.getElementById('chips');
+  const rail = document.getElementById('rail');
+
+  let total = 0;
+  let mainHTML = '';
+  // sharp newspaper-style chip strip — chips share borders, no rounding
+  let chipsHTML = `<button class="chip text-[11.5px] font-medium px-3 py-1.5 border border-rule-strong bg-paper hover:bg-paper2" data-cat="all" data-active="true">All</button>`;
+  let railHTML = `<li><a href="#top" class="rail-link group flex items-center gap-2.5 text-[12px] text-ink-500 hover:text-ink-900 py-1"><span class="rail-bullet w-1 h-1 bg-ink-300 transition-transform"></span>Overview</a></li>`;
+
+  DATA.categories.forEach(cat => {
+    total += cat.items.length;
+    const a = accentClass[cat.accent];
+
+    chipsHTML += `<button class="chip group inline-flex items-center gap-2 text-[11.5px] font-medium px-3 py-1.5 border border-rule-strong border-l-0 bg-paper hover:bg-paper2" data-cat="${cat.id}">
+      <span class="w-1.5 h-1.5 ${a.dot}"></span>
+      ${cat.title}
+      <span class="chip-count font-mono mono-tight text-[10px] nums text-ink-400">${String(cat.items.length).padStart(2,'0')}</span>
+    </button>`;
+
+    railHTML += `<li>
+      <a href="#cat-${cat.id}" class="rail-link group flex items-center gap-2.5 text-[12px] text-ink-500 hover:text-ink-900 py-1" data-rail="${cat.id}">
+        <span class="rail-bullet w-1 h-1 ${a.dot} transition-transform"></span>
+        <span class="rail-num font-mono mono-tight text-[10px] nums text-ink-400 group-hover:text-ink-700">${cat.num}</span>
+        <span class="truncate">${cat.title}</span>
+      </a>
+    </li>`;
+
+    let tiles = '';
+    cat.items.forEach(([name, url, note]) => {
+      const d = domainOf(url);
+      const fi = favicon(url);
+      const ini = initials(name);
+      tiles += `
+        <a href="${url}" target="_blank" rel="noopener noreferrer"
+           class="tile bg-paper border border-rule p-3.5 -mt-px -ml-px flex flex-col gap-1.5 min-h-[112px]"
+           data-name="${name.toLowerCase()}" data-domain="${d.toLowerCase()}">
+          <div class="flex items-start gap-2.5">
+            <div class="w-8 h-8 bg-white border border-rule grid place-items-center overflow-hidden flex-shrink-0">
+              ${fi
+                ? `<img src="${fi}" alt="" loading="lazy" class="w-full h-full object-contain p-1" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${ini}',className:'font-mono mono-tight text-[11px] font-semibold text-ink-700'}))">`
+                : `<span class="font-mono mono-tight text-[11px] font-semibold text-ink-700">${ini}</span>`}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="tile-name text-[13px] font-semibold leading-tight text-ink-900 truncate">${name}</div>
+              <div class="font-mono mono-tight text-[10px] text-ink-400 truncate mt-0.5">${d}</div>
+            </div>
+            <svg class="tile-arrow opacity-0 text-ink-700 flex-shrink-0" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+          </div>
+          ${note ? `<div class="text-[11.5px] text-ink-500 leading-snug mt-auto clamp-2">${note}</div>` : ''}
+        </a>`;
+    });
+
+    mainHTML += `
+      <section id="cat-${cat.id}" data-cat="${cat.id}" class="scroll-mt-24">
+        <header class="flex flex-col gap-3 mb-7">
+          <div class="flex items-baseline gap-4">
+            <span class="font-mono mono-tight text-[10.5px] nums tracking-[0.22em] text-ink-400">— ${cat.num}</span>
+            <span class="h-px flex-1 bg-rule"></span>
+            <span class="font-mono mono-tight text-[10.5px] nums text-ink-400">${String(cat.items.length).padStart(2,'0')} platforms</span>
+          </div>
+          <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+            <h2 class="font-serif font-normal text-[clamp(36px,5vw,64px)] leading-[0.95] tracking-tightest text-ink-900">
+              ${cat.title}
+            </h2>
+            <p class="text-[14px] text-ink-700 max-w-md md:text-right">${cat.blurb}</p>
+          </div>
+        </header>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 border-t border-l border-rule -mb-px ml-px" data-tiles>
+          ${tiles}
+        </div>
+      </section>`;
+  });
+
+  main.innerHTML = mainHTML;
+  chips.innerHTML = chipsHTML;
+  rail.innerHTML = railHTML;
+
+  const cats = DATA.categories.length;
+  const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setText('stat-total', total);
+  setText('stat-total-big', total);
+  setText('stat-cats', cats);
+  setText('stat-cats-big', cats);
+
+  // chip click behavior — applySearch is the single source of truth for visibility
+  chips.addEventListener('click', e => {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+    chips.querySelectorAll('.chip').forEach(c => c.dataset.active = 'false');
+    btn.dataset.active = 'true';
+    applySearch();
+  });
+
+  // inline search
+  const search = document.getElementById('search');
+  search.addEventListener('input', applySearch);
+
+  const isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent);
+  const kbdEl = document.getElementById('search-kbd');
+  if (kbdEl) kbdEl.textContent = isMac ? '⌘ K' : 'Ctrl K';
+
+  document.addEventListener('keydown', (e) => {
+    const inField = ['INPUT','TEXTAREA'].includes(document.activeElement.tagName);
+    const cmdK = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k';
+    if (cmdK) {
+      e.preventDefault();
+      openPalette();
+      return;
+    }
+    if (e.key === '/' && !inField) {
+      e.preventDefault();
+      search.focus();
+    }
+    if (e.key === 'Escape' && document.activeElement === search) {
+      search.value = '';
+      applySearch();
+      search.blur();
+    }
+  });
+
+  // clicking the search hint also opens the palette
+  if (kbdEl) {
+    kbdEl.style.cursor = 'pointer';
+    kbdEl.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); openPalette(); });
+  }
+
+  // rail intersection observer
+  const railLinks = document.querySelectorAll('.rail-link[data-rail]');
+  const sections = document.querySelectorAll('section[data-cat]');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        railLinks.forEach(l => l.dataset.active = (l.dataset.rail === en.target.dataset.cat) ? 'true' : 'false');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => obs.observe(s));
+}
+
+function applySearch() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const activeChip = document.querySelector('#chips .chip[data-active="true"]');
+  const activeCat = activeChip?.dataset.cat || 'all';
+  let visible = 0;
+  document.querySelectorAll('section[data-cat]').forEach(sec => {
+    const allowedByChip = (activeCat === 'all' || sec.dataset.cat === activeCat);
+    if (!allowedByChip) {
+      sec.style.display = 'none';
+      return;
+    }
+    let secVisible = 0;
+    sec.querySelectorAll('.tile').forEach(tile => {
+      const match = !q || tile.dataset.name.includes(q) || tile.dataset.domain.includes(q);
+      tile.style.display = match ? '' : 'none';
+      if (match) { secVisible++; visible++; }
+    });
+    sec.style.display = (q && secVisible === 0) ? 'none' : '';
+  });
+  const empty = document.getElementById('empty');
+  document.getElementById('empty-q').textContent = `"${q}"`;
+  empty.classList.toggle('hidden', visible > 0 || !q);
+}
+
+render();
+setBuildDate();
+
+/* ===== Command palette ===== */
+const PALETTE_ITEMS = (() => {
+  const out = [];
+  DATA.categories.forEach(cat => {
+    cat.items.forEach(([name, url, note]) => {
+      out.push({
+        name, url, note: note || '',
+        domain: domainOf(url),
+        catId: cat.id,
+        catTitle: cat.title,
+        catNum: cat.num,
+        haystack: (name + ' ' + domainOf(url) + ' ' + cat.title + ' ' + (note || '')).toLowerCase(),
+      });
+    });
+  });
+  return out;
+})();
+
+const paletteEl = document.getElementById('palette');
+const paletteBackdrop = document.getElementById('palette-backdrop');
+const paletteInput = document.getElementById('palette-input');
+const paletteList = document.getElementById('palette-list');
+
+let paletteActiveIdx = 0;
+
+function openPalette() {
+  paletteEl.dataset.open = 'true';
+  paletteBackdrop.dataset.open = 'true';
+  paletteEl.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  paletteInput.value = '';
+  renderPaletteResults('');
+  setTimeout(() => paletteInput.focus(), 10);
+}
+
+function closePalette() {
+  paletteEl.dataset.open = 'false';
+  paletteBackdrop.dataset.open = 'false';
+  paletteEl.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function highlight(text, q) {
+  if (!q) return escapeHtml(text);
+  const safe = escapeHtml(text);
+  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig');
+  return safe.replace(re, '<span class="palette-mark">$1</span>');
+}
+
+function rankItems(q) {
+  if (!q) return PALETTE_ITEMS.slice();
+  const ql = q.toLowerCase();
+  const scored = [];
+  for (const it of PALETTE_ITEMS) {
+    const nameL = it.name.toLowerCase();
+    const domL = it.domain.toLowerCase();
+    let score = 0;
+    if (nameL === ql) score = 1000;
+    else if (nameL.startsWith(ql)) score = 700;
+    else if (domL.startsWith(ql)) score = 600;
+    else if (nameL.includes(ql)) score = 400;
+    else if (domL.includes(ql)) score = 300;
+    else if (it.haystack.includes(ql)) score = 100;
+    if (score > 0) scored.push({ it, score });
+  }
+  scored.sort((a, b) => b.score - a.score || a.it.name.localeCompare(b.it.name));
+  return scored.map(s => s.it);
+}
+
+function paletteItemHTML(it, idx, q) {
+  const fi = favicon(it.url);
+  const ini = initials(it.name);
+  return `<div class="palette-item" role="option" data-idx="${idx}" data-active="${idx === paletteActiveIdx}" data-url="${it.url}">
+    <div class="palette-favicon">
+      ${fi ? `<img src="${fi}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${ini}'}))">` : `<span>${ini}</span>`}
+    </div>
+    <div class="palette-meta">
+      <span class="palette-name">${highlight(it.name, q)}</span>
+      <span class="palette-domain">${highlight(it.domain, q)}</span>
+    </div>
+    <div style="display:flex; gap: 10px; align-items: baseline;">
+      <span class="palette-cat">${it.catNum}</span>
+      <span class="palette-arrow">↵</span>
+    </div>
+  </div>`;
+}
+
+function renderPaletteResults(q) {
+  const results = rankItems(q);
+  paletteActiveIdx = 0;
+
+  if (results.length === 0) {
+    paletteList.innerHTML = `<div class="palette-empty">No platforms match “${escapeHtml(q)}”.</div>`;
+    return;
+  }
+
+  let html = '';
+  if (!q) {
+    const byCat = new Map();
+    results.forEach(it => {
+      if (!byCat.has(it.catId)) byCat.set(it.catId, []);
+      byCat.get(it.catId).push(it);
+    });
+    let i = 0;
+    DATA.categories.forEach(cat => {
+      const list = byCat.get(cat.id) || [];
+      if (!list.length) return;
+      html += `<div class="palette-group-label">${cat.num} · ${cat.title}</div>`;
+      list.forEach(it => { html += paletteItemHTML(it, i, ''); i++; });
+    });
+  } else {
+    results.forEach((it, i) => { html += paletteItemHTML(it, i, q); });
+  }
+
+  paletteList.innerHTML = html;
+}
+
+function setActiveIdx(idx) {
+  const items = paletteList.querySelectorAll('.palette-item');
+  if (!items.length) return;
+  paletteActiveIdx = (idx + items.length) % items.length;
+  items.forEach(el => el.dataset.active = (parseInt(el.dataset.idx, 10) === paletteActiveIdx) ? 'true' : 'false');
+  items[paletteActiveIdx]?.scrollIntoView({ block: 'nearest' });
+}
+
+function activateCurrent() {
+  const items = paletteList.querySelectorAll('.palette-item');
+  const item = items[paletteActiveIdx];
+  if (!item) return;
+  const url = item.dataset.url;
+  if (url) {
+    closePalette();
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+}
+
+paletteInput.addEventListener('input', e => renderPaletteResults(e.target.value.trim()));
+paletteInput.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx(paletteActiveIdx + 1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx(paletteActiveIdx - 1); }
+  else if (e.key === 'Enter') { e.preventDefault(); activateCurrent(); }
+  else if (e.key === 'Escape') { e.preventDefault(); closePalette(); }
+});
+paletteList.addEventListener('mousemove', e => {
+  const item = e.target.closest('.palette-item');
+  if (!item) return;
+  const idx = parseInt(item.dataset.idx, 10);
+  if (idx !== paletteActiveIdx) setActiveIdx(idx);
+});
+paletteList.addEventListener('click', e => {
+  const item = e.target.closest('.palette-item');
+  if (!item) return;
+  const url = item.dataset.url;
+  if (url) {
+    closePalette();
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+});
+paletteBackdrop.addEventListener('click', closePalette);
+</script>
+
+</body>
+</html>
