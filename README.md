@@ -50,6 +50,15 @@ Following providers and products are listed in alphabetical order.
 - [Zeabur](https://zeabur.com)
 - [Zimki](https://www.slideshare.net/swardley/zimki-2006) - one of the original platform as a service offerings from Canon.
 
+#### Sandboxes and Harnesses
+- [Adaptive](https://www.adaptive.live/)
+- [Beam Cloud](https://www.beam.cloud/)
+- [Daytona](https://www.daytona.io/)
+- [E2B](https://e2b.dev/)
+- [Modal](https://modal.com)
+- [Runloop](https://www.runloop.ai/)
+
+
 #### Jamstack
 - [AWS Amplify](https://aws.amazon.com/amplify)
 - [Cloudflare Pages](https://pages.cloudflare.com/)
@@ -114,7 +123,6 @@ Following providers and products are listed in alphabetical order.
 - [Zeet](https://zeet.co)
 
 #### Cloud IDE or Developer Workspaces
-- [Adaptive](https://www.adaptive.live/)
 - [Cocalc](https://cocalc.com/)
 - [Codepen](https://codepen.io/)
 - [Coder.com](https://coder.com/)
@@ -131,3 +139,5 @@ Following providers and products are listed in alphabetical order.
 - [Signadot](https://www.signadot.com/)
 - [Stackblitz](https//stackblitz.com/)
 - [Sourcelair](https://ide.sourcelair.com/home)
+
+
