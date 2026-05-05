@@ -66,7 +66,7 @@ Following providers and products are listed in alphabetical order.
 - [Github Pages](https://pages.github.com/)
 - [GitLab Pages](https://docs.gitlab.com/ee/user/project/pages/)
 - [Glitch](https://glitch.com/)
-- [layer0](https://www.layer0.co)
+- [layer0](https://www.layer0.co) [defunct]
 - [Netlify](https://www.netlify.com)
 - [Vercel](https://vercel.com)
 
