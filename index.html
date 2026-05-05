@@ -82,7 +82,7 @@
   .rail::-webkit-scrollbar { width: 0; height: 0; }
 
   /* tile interactions */
-  .tile { transition: background-color .18s cubic-bezier(.2,.7,.2,1), border-color .18s, color .15s; }
+  .tile { transition: background-color .18s cubic-bezier(.2,.7,.2,1), border-color .18s, color .15s; cursor: pointer; }
   .tile:hover { background-color: #ffffff; border-color: #16140f; z-index: 2; }
   .tile:hover .tile-arrow { opacity: 1; transform: translate(2px, -2px); }
   .tile:hover .tile-name { color: #16140f; }
@@ -103,6 +103,51 @@
   .tile::after  { bottom: -1px; right: -1px; border-bottom: 1px solid; border-right: 1px solid; }
   .tile:hover::before, .tile:hover::after { opacity: 1; }
 
+  /* alive-only toggle */
+  #alive-toggle { transition: background-color .15s, color .15s, border-color .15s; }
+  #alive-toggle[data-active="true"] {
+    background: #16140f;
+    color: #fafaf7;
+    border-color: #16140f;
+  }
+  #alive-toggle[data-active="true"] .alive-toggle-box {
+    background: #0d8f6f;
+    border-color: #0d8f6f;
+  }
+  #alive-toggle[data-active="true"] .alive-toggle-check { opacity: 1; }
+  #alive-toggle[data-active="true"] #alive-toggle-count { color: #b6b2a0; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  /* status pill — used in the modal only */
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    padding: 2px 6px;
+    border: 1px solid;
+    line-height: 1.4;
+  }
+  .status-pill[data-status="alive"] {
+    color: #0d8f6f;
+    border-color: #0d8f6f;
+    background: #eaf6f1;
+  }
+  .status-pill[data-status="defunct"] {
+    color: #c84922;
+    border-color: #c84922;
+    background: #faece6;
+  }
+  .status-dot {
+    width: 6px; height: 6px;
+  }
+  .status-pill[data-status="alive"] .status-dot { background: #0d8f6f; }
+  .status-pill[data-status="defunct"] .status-dot { background: #c84922; }
+
   /* underline animation on inline links */
   .ulink {
     background-image: linear-gradient(currentColor, currentColor);
@@ -114,7 +159,17 @@
   }
   .ulink:hover { background-size: 100% 2px; }
 
-  /* search */
+  /* search bar — prominent newspaper-style */
+  .search-bar {
+    box-shadow: 6px 6px 0 0 #16140f;
+    transition: box-shadow .15s ease, transform .15s ease;
+  }
+  .search-bar:focus-within {
+    box-shadow: 8px 8px 0 0 #4f3df0;
+    transform: translate(-1px, -1px);
+  }
+  .search-bar:focus-within .search-icon { color: #4f3df0; }
+  .search-input { caret-color: #4f3df0; }
   .focus-ring:focus { outline: none; border-color: #16140f; }
 
   /* chips: sharp, newspaper-style */
@@ -141,15 +196,6 @@
     float: left;
     padding: 0.06em 0.1em 0 0;
     color: #16140f;
-  }
-
-  /* line clamp helper */
-  .clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
   /* logo hover: subtle layer shift */
@@ -318,6 +364,178 @@
     color: #8e8b7d;
     pointer-events: none;
   }
+
+  /* ===== Detail Modal ===== */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(22, 20, 15, 0.55);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+  }
+  .modal-backdrop[data-open="true"] { opacity: 1; pointer-events: auto; }
+
+  .modal {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, calc(-50% + 8px));
+    width: min(560px, calc(100vw - 32px));
+    max-height: calc(100vh - 64px);
+    background: #fafaf7;
+    border: 1px solid #16140f;
+    box-shadow: 0 28px 70px -22px rgba(22, 20, 15, 0.45), 0 10px 24px -8px rgba(22, 20, 15, 0.22);
+    z-index: 201;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease;
+    display: flex; flex-direction: column;
+  }
+  .modal[data-open="true"] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%);
+  }
+  .modal-header {
+    flex: 0 0 auto;
+    padding: 24px 28px 18px;
+    border-bottom: 1px solid #e9e6dc;
+    display: flex; align-items: flex-start; gap: 16px;
+    position: relative;
+  }
+  .modal-logo {
+    width: 56px; height: 56px;
+    background: #fff;
+    border: 1px solid #cfcab8;
+    display: grid; place-items: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .modal-logo img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+  .modal-logo span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px; font-weight: 600;
+    color: #3a3830; letter-spacing: -0.02em;
+  }
+  .modal-title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 30px;
+    line-height: 1.05;
+    color: #16140f;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .modal-domain {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #6b685c;
+    letter-spacing: -0.01em;
+    margin-top: 6px;
+    word-break: break-all;
+  }
+  .modal-pills {
+    display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+    margin-top: 10px;
+  }
+  .modal-cat-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #3a3830;
+    border: 1px solid #cfcab8;
+    background: #f3f1ea;
+    padding: 3px 8px;
+  }
+  .modal-cat-dot { width: 6px; height: 6px; }
+  .modal-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 28px; height: 28px;
+    display: grid; place-items: center;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #6b685c;
+    cursor: pointer;
+    transition: border-color .15s, color .15s, background-color .15s;
+  }
+  .modal-close:hover { border-color: #16140f; color: #16140f; background: #f3f1ea; }
+
+  .modal-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 22px 28px;
+  }
+  .modal-body::-webkit-scrollbar { width: 8px; }
+  .modal-body::-webkit-scrollbar-thumb { background: #cfcab8; }
+
+  .modal-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: #8e8b7d;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .modal-description {
+    font-size: 15px;
+    line-height: 1.55;
+    color: #3a3830;
+    font-family: 'Inter Tight', sans-serif;
+  }
+  .modal-github {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #e9e6dc;
+  }
+  .modal-github-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #3a3830;
+    text-decoration: none;
+    border: 1px solid #cfcab8;
+    padding: 8px 12px;
+    background: #fff;
+    transition: border-color .15s, background-color .15s;
+    word-break: break-all;
+  }
+  .modal-github-link:hover { border-color: #16140f; background: #f3f1ea; }
+
+  .modal-footer {
+    flex: 0 0 auto;
+    padding: 16px 28px;
+    border-top: 1px solid #16140f;
+    background: #f3f1ea;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .modal-footer-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #6b685c;
+  }
+  .modal-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #16140f;
+    color: #fafaf7;
+    border: 1px solid #16140f;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 18px;
+    text-decoration: none;
+    transition: background-color .15s, color .15s;
+    cursor: pointer;
+  }
+  .modal-cta:hover { background: #fafaf7; color: #16140f; }
+  .modal-cta svg { transition: transform .15s ease; }
+  .modal-cta:hover svg { transform: translate(2px, -2px); }
 </style>
 </head>
 <body class="bg-paper text-ink-900 font-sans antialiased grain">
@@ -335,6 +553,49 @@
     <span><span class="k">↵</span> open</span>
     <span><span class="k">esc</span> close</span>
     <span style="margin-left: auto;">⌘K palette</span>
+  </div>
+</div>
+
+<!-- ===== Detail Modal ===== -->
+<div id="modal-backdrop" class="modal-backdrop" aria-hidden="true"></div>
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal-header">
+    <div id="modal-logo" class="modal-logo"></div>
+    <div style="flex: 1; min-width: 0;">
+      <h2 id="modal-title" class="modal-title"></h2>
+      <div id="modal-domain" class="modal-domain"></div>
+      <div class="modal-pills">
+        <span id="modal-cat-badge" class="modal-cat-badge">
+          <span id="modal-cat-dot" class="modal-cat-dot"></span>
+          <span id="modal-cat-text"></span>
+        </span>
+        <span id="modal-status-pill" class="status-pill" data-status="alive">
+          <span class="status-dot"></span>
+          <span id="modal-status-text">alive</span>
+        </span>
+      </div>
+    </div>
+    <button id="modal-close" class="modal-close" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body">
+    <span class="modal-section-label">About</span>
+    <p id="modal-description" class="modal-description"></p>
+    <div id="modal-github" class="modal-github" style="display: none;">
+      <span class="modal-section-label">Source</span>
+      <a id="modal-github-link" class="modal-github-link" href="#" target="_blank" rel="noopener noreferrer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55 0-.27-.01-1-.02-1.96-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.27-5.24-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.17.92-.26 1.9-.39 2.88-.39.98 0 1.96.13 2.88.39 2.2-1.48 3.16-1.17 3.16-1.17.62 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.65.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+        <span id="modal-github-text"></span>
+      </a>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span class="modal-footer-meta">esc to close</span>
+    <a id="modal-cta" class="modal-cta" href="#" target="_blank" rel="noopener noreferrer">
+      <span>Landing page</span>
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+    </a>
   </div>
 </div>
 
@@ -407,24 +668,24 @@
       </dd>
     </div>
     <div class="px-5 py-4 border-r border-ink-900 -mr-px">
+      <dt class="font-mono mono-tight text-[10px] uppercase tracking-[0.22em] text-ink-500 mb-1.5">Alive</dt>
+      <dd class="flex items-baseline gap-2">
+        <span class="font-serif text-[44px] leading-none tracking-tightest text-ink-900 nums" id="stat-alive-big">—</span>
+        <span class="serif-italic text-[18px] text-ink-400">operating</span>
+      </dd>
+    </div>
+    <div class="px-5 py-4 border-r border-ink-900 -mr-px">
+      <dt class="font-mono mono-tight text-[10px] uppercase tracking-[0.22em] text-ink-500 mb-1.5">Defunct</dt>
+      <dd class="flex items-baseline gap-2">
+        <span class="font-serif text-[44px] leading-none tracking-tightest text-ink-900 nums" id="stat-defunct-big">—</span>
+        <span class="serif-italic text-[18px] text-ink-400">archived</span>
+      </dd>
+    </div>
+    <div class="px-5 py-4">
       <dt class="font-mono mono-tight text-[10px] uppercase tracking-[0.22em] text-ink-500 mb-1.5">Categories</dt>
       <dd class="flex items-baseline gap-2">
         <span class="font-serif text-[44px] leading-none tracking-tightest text-ink-900 nums" id="stat-cats-big">—</span>
         <span class="serif-italic text-[18px] text-ink-400">distinct</span>
-      </dd>
-    </div>
-    <div class="px-5 py-4 border-r border-ink-900 -mr-px">
-      <dt class="font-mono mono-tight text-[10px] uppercase tracking-[0.22em] text-ink-500 mb-1.5">License</dt>
-      <dd class="flex items-baseline gap-2">
-        <span class="font-serif text-[44px] leading-none tracking-tightest text-ink-900">MIT</span>
-        <span class="serif-italic text-[18px] text-ink-400">open</span>
-      </dd>
-    </div>
-    <div class="px-5 py-4">
-      <dt class="font-mono mono-tight text-[10px] uppercase tracking-[0.22em] text-ink-500 mb-1.5">Contributors</dt>
-      <dd class="flex items-baseline gap-2">
-        <span class="font-serif text-[44px] leading-none tracking-tightest text-ink-900 nums" id="stat-contrib">42</span>
-        <span class="serif-italic text-[18px] text-ink-400">contributors</span>
       </dd>
     </div>
   </dl>
@@ -432,14 +693,27 @@
 
 <!-- ===== TOOLBAR ===== -->
 <section class="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-10 pb-8">
-  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-y border-ink-900 py-3.5">
-    <div class="relative flex-1 max-w-md">
-      <svg class="absolute left-2 top-1/2 -translate-y-1/2 text-ink-500" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-      <input id="search" type="text" autocomplete="off" placeholder="Search 110+ platforms…"
-        class="focus-ring w-full bg-transparent border-b border-rule pl-7 pr-10 py-1.5 text-[14px] placeholder:text-ink-400 transition-colors">
-      <span id="search-kbd" class="hidden md:inline-flex items-center gap-1 absolute right-1 top-1/2 -translate-y-1/2 font-mono mono-tight text-[10px] text-ink-500 border border-rule-strong px-1.5 leading-[18px]"></span>
-    </div>
+  <div class="search-bar relative border border-ink-900 bg-paper flex items-stretch">
+    <span class="font-mono mono-tight text-[10px] uppercase tracking-[0.24em] text-ink-500 hidden md:flex items-center px-4 border-r border-rule">Search</span>
+    <svg class="search-icon absolute md:static left-4 top-1/2 -translate-y-1/2 md:translate-y-0 md:self-center md:ml-4 text-ink-700 pointer-events-none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+    <input id="search" type="text" autocomplete="off" placeholder="Find a platform — by name, domain, or category…"
+      class="search-input flex-1 min-w-0 bg-transparent pl-12 md:pl-3 pr-12 py-4 text-[18px] md:text-[20px] font-medium tracking-tight placeholder:text-ink-400 placeholder:font-normal focus:outline-none">
+    <button id="search-clear" class="hidden absolute right-[110px] md:right-[124px] top-1/2 -translate-y-1/2 w-7 h-7 grid place-items-center text-ink-500 hover:text-ink-900 hover:bg-paper2 transition-colors" aria-label="Clear search">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <span id="search-kbd" class="hidden md:inline-flex items-center font-mono mono-tight text-[11px] text-ink-500 px-3 border-l border-rule self-stretch hover:bg-paper2 cursor-pointer transition-colors"></span>
+  </div>
+
+  <div class="mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-ink-900 pb-3.5">
     <div id="chips" class="flex flex-wrap items-center gap-0 -ml-px"></div>
+    <label id="alive-toggle" class="inline-flex items-center gap-2 cursor-pointer select-none text-[11.5px] font-medium border border-rule-strong px-3 py-1.5 transition-colors hover:border-ink-900 self-start md:self-auto" data-active="false">
+      <span class="alive-toggle-box relative w-3.5 h-3.5 border border-ink-900 grid place-items-center bg-paper">
+        <svg class="alive-toggle-check opacity-0 text-paper" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      <input id="alive-toggle-input" type="checkbox" class="sr-only" />
+      <span>Alive only</span>
+      <span id="alive-toggle-count" class="font-mono mono-tight text-[10px] nums text-ink-400"></span>
+    </label>
   </div>
 </section>
 
@@ -490,7 +764,7 @@
     </div>
   </div>
 
-  <!-- Colophon strip — finesse: full-bleed with stacked layers echo of logo -->
+  <!-- Colophon strip -->
   <div class="border-t border-rule bg-paper2/60">
     <div class="mx-auto max-w-[1400px] px-6 lg:px-10 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div class="flex items-center gap-4">
@@ -523,44 +797,55 @@ const DATA = {
       blurb: "Managed Platform-as-a-Service and Container-as-a-Service.",
       accent: "indigo",
       items: [
-        ["Appliku", "https://appliku.com"],
-        ["apply.build", "https://apply.build"],
-        ["Aptible", "https://aptible.com"],
-        ["AWS App Runner", "https://aws.amazon.com/apprunner"],
-        ["AWS ECS", "https://aws.amazon.com/ecs"],
-        ["AZIN", "https://azin.run"],
-        ["Backery", "https://backery.io/"],
-        ["Clever Cloud", "https://www.clever-cloud.com/"],
-        ["Cloud 66", "https://www.cloud66.com/", "On your own cloud or server."],
-        ["Coherence", "https://www.withcoherence.com/?ref=awesome-paas", "In your own AWS or GCP account."],
-        ["Cyclic", "https://www.cyclic.sh/"],
-        ["Digitalocean App Platform", "https://www.digitalocean.com/products/app-platform"],
-        ["Diploi", "https://diploi.com/"],
-        ["Back4app Web Deployment", "https://www.back4app.com/web-deployment-platform"],
-        ["dotCloud", "https://www.docker.com/docker-news-and-press/dotcloud-inc-now-docker-inc"],
-        ["Flightcontrol", "https://www.flightcontrol.dev?ref=awesome-paas"],
-        ["Fly.io", "https://fly.io"],
-        ["France Nuage", "https://france-nuage.fr", "Sovereign open-source cloud, hosted in France."],
-        ["Heroku", "https://www.heroku.com", "Acquired by Salesforce."],
-        ["InstaPods", "https://instapods.com"],
-        ["Google Cloud AppEngine", "https://cloud.google.com/appengine"],
-        ["Google Cloud Run", "https://cloud.google.com/run"],
-        ["Koyeb", "https://www.koyeb.com"],
-        ["MicroCloud", "https://canonical.com/microcloud"],
-        ["Ownkube", "https://ownkube.io", "In your own AWS account on k3s or EKS."],
-        ["platformOS", "https://platformos.com"],
-        ["Platform.sh", "https://platform.sh"],
-        ["Ploi", "https://ploi.io"],
-        ["Qovery", "https://www.qovery.com/", "Enterprise Kubernetes — EKS, GKE, AKS, Scaleway."],
-        ["Railway", "https://railway.app/"],
-        ["Render", "https://render.com"],
-        ["Sliplane.io", "https://sliplane.io"],
-        ["SnapDeploy", "https://snapdeploy.dev", "Deploy free, pay only when always on."],
-        ["Supabase.io", "https://github.com/supabase/supabase"],
-        ["TinyFunction", "https://www.tinyfunction.com/"],
-        ["TinyStacks", "https://www.tinystacks.com/"],
-        ["Zeabur", "https://zeabur.com"],
-        ["Zimki", "https://www.slideshare.net/swardley/zimki-2006", "Original PaaS from Canon."]
+        { name: "Acquia Cloud", url: "https://www.acquia.com", status: "alive", description: "Drupal-focused cloud platform for digital experiences and content operations." },
+        { name: "Appliku", url: "https://appliku.com", status: "alive", description: "Modern application deployment platform; deploy unlimited apps and databases for one monthly price via git push." },
+        { name: "apply.build", url: "https://apply.build", status: "alive", description: "European PaaS with WAF, vulnerability scanning, metrics, and logs included in every plan. Free tier available." },
+        { name: "Aptible", url: "https://aptible.com", status: "alive", description: "Secure, HITRUST R2 certified cloud infrastructure for digital health teams; deploy apps, databases, and AI on isolated AWS infrastructure." },
+        { name: "AWS App Runner", url: "https://aws.amazon.com/apprunner", status: "alive", description: "Managed container service that deploys directly from source code or container images on AWS." },
+        { name: "AWS ECS", url: "https://aws.amazon.com/ecs", status: "alive", description: "Amazon Elastic Container Service — fully managed container orchestration." },
+        { name: "AZIN", url: "https://azin.run", status: "alive", description: "Auto-deploys into your own GCP, AWS, or Azure account from git push to production — no DevOps required." },
+        { name: "Back4app Web Deployment", url: "https://www.back4app.com/web-deployment-platform", status: "alive", description: "Deploy full-stack web apps from GitHub on managed, secure infrastructure with real-time metrics and seamless scaling." },
+        { name: "Backery", url: "https://backery.io/", status: "defunct", description: "Domain no longer points to the project — currently redirects to an unrelated site." },
+        { name: "Clever Cloud", url: "https://www.clever-cloud.com/", status: "alive", description: "French PaaS to host, deploy, and maintain applications in operational conditions at a controlled cost." },
+        { name: "Cloud 66", url: "https://www.cloud66.com/", status: "alive", description: "DevOps platform that deploys applications to any cloud provider or your own servers — from 1 to 1000 servers, no lock-in." },
+        { name: "Cloudways", url: "https://www.cloudways.com", status: "alive", description: "Managed cloud hosting across major cloud providers (AWS, GCP, DigitalOcean, Vultr, Linode)." },
+        { name: "Coherence", url: "https://www.withcoherence.com/?ref=awesome-paas", status: "defunct", description: "Site offline. Coherence offered a PaaS that deployed in your own AWS or GCP account." },
+        { name: "Convox", url: "https://convox.com", status: "alive", description: "Multi-cloud PaaS with consistent deployment workflows across AWS, GCP, and on-prem." },
+        { name: "Cyclic", url: "https://www.cyclic.sh/", status: "defunct", description: "Site offline. Project was acquired and shut down." },
+        { name: "Digitalocean App Platform", url: "https://www.digitalocean.com/products/app-platform", status: "alive", description: "DigitalOcean's managed PaaS for building, deploying, and scaling apps in just a few clicks." },
+        { name: "DigitalOcean Functions", url: "https://www.digitalocean.com/products/functions", status: "alive", description: "DigitalOcean's serverless functions platform — pay-per-invocation compute." },
+        { name: "Diploi", url: "https://diploi.com/", status: "alive", description: "Build apps using cloud development environments and host them online with a single click — no manual server configuration." },
+        { name: "dotCloud", url: "https://www.docker.com/docker-news-and-press/dotcloud-inc-now-docker-inc", status: "defunct", description: "Historical: dotCloud, one of the original PaaS providers, became Docker, Inc." },
+        { name: "Engine Yard", url: "https://www.engineyard.com", status: "alive", description: "Managed cloud platform for Ruby on Rails and modern web applications." },
+        { name: "Flightcontrol", url: "https://www.flightcontrol.dev?ref=awesome-paas", status: "alive", description: "PaaS that deploys directly to your own AWS account — no black box, lock-in, or AWS markups." },
+        { name: "Fly.io", url: "https://fly.io", status: "alive", description: "Global app platform that runs your code close to users — fearless container deployments worldwide." },
+        { name: "France Nuage", url: "https://france-nuage.fr", status: "alive", description: "Sovereign open-source cloud (SSPL-1.0) hosted 100% in France; managed hosting of open-source apps (Grafana, Matomo, Odoo) and S3 object storage." },
+        { name: "Genezio", url: "https://genezio.com", status: "alive", description: "Full-stack development platform with type-safe client/server communication." },
+        { name: "Google Cloud AppEngine", url: "https://cloud.google.com/appengine", status: "alive", description: "Fully managed serverless platform for scalable web and mobile backends in any language." },
+        { name: "Google Cloud Run", url: "https://cloud.google.com/run", status: "alive", description: "Build and deploy scalable containerized apps written in any language on a fully managed platform." },
+        { name: "Heroku", url: "https://www.heroku.com", status: "alive", description: "Original cloud application platform — build, deploy, manage, and scale apps. Acquired by Salesforce." },
+        { name: "IBM Cloud Code Engine", url: "https://cloud.ibm.com/codeengine", status: "alive", description: "Fully managed serverless platform on IBM Cloud for containers, jobs, and functions." },
+        { name: "InstaPods", url: "https://instapods.com", status: "alive", description: "One-command deploys for AI-built apps (Cursor, Claude Code, Lovable, Bolt). $3/mo after 7-day free trial." },
+        { name: "Koyeb", url: "https://www.koyeb.com", status: "alive", description: "High-performance infrastructure for APIs, inference, and databases across CPUs, GPUs, and accelerators in 50+ locations." },
+        { name: "Linode (Akamai Cloud)", url: "https://www.linode.com", status: "alive", description: "Akamai's developer cloud with managed Kubernetes, databases, and compute." },
+        { name: "MicroCloud", url: "https://canonical.com/microcloud", status: "alive", description: "Canonical's lightweight, automated, and trusted open source cloud platform." },
+        { name: "Mogenius", url: "https://mogenius.com", status: "alive", description: "Cloud-native development platform built on Kubernetes." },
+        { name: "Ownkube", url: "https://ownkube.io", status: "alive", description: "Developer platform in your own AWS account on k3s or EKS. Named agents (Cost, Incident, Scaling, Security) run your ops. Free for single-node k3s." },
+        { name: "platformOS", url: "https://platformos.com", status: "alive", description: "Build secure, scalable applications fast — fully managed PaaS without vendor lock-in or hidden fees." },
+        { name: "Ploi", url: "https://ploi.io", status: "alive", description: "Server management and easy site deployment tool — focus on your application, not infrastructure." },
+        { name: "Qovery", url: "https://www.qovery.com/", status: "alive", description: "Enterprise Kubernetes management platform. Deploy apps, databases, Helm charts, and Terraform on EKS, GKE, AKS, and Scaleway. Includes Terraform provider, CLI, MCP server, and AI Agent Skill." },
+        { name: "Railway", url: "https://railway.app/", status: "alive", description: "Full-stack intelligent cloud for deploying web apps, servers, and databases with automatic scaling, monitoring, and security." },
+        { name: "Render", url: "https://render.com", status: "alive", description: "Cloud for builders — deploy and scale any app or agent on intuitive cloud infrastructure for the modern web." },
+        { name: "Scalingo", url: "https://scalingo.com", status: "alive", description: "French PaaS — European Heroku alternative for hosting and operating applications." },
+        { name: "Sevalla", url: "https://sevalla.com", status: "alive", description: "Modern application hosting platform from Kinsta." },
+        { name: "Sliplane.io", url: "https://sliplane.io", status: "alive", description: "Fully managed Container as a Service platform that simplifies Docker hosting." },
+        { name: "SnapDeploy", url: "https://snapdeploy.dev", status: "alive", description: "Docker container hosting on AWS. Deploy free, pay only when always on. 10 deploys/day with no credit card; always-on from $12/month." },
+        { name: "Supabase", url: "https://supabase.com", github: "https://github.com/supabase/supabase", status: "alive", description: "Open-source Postgres development platform — dedicated Postgres database for web, mobile, and AI applications." },
+        { name: "TinyFunction", url: "https://www.tinyfunction.com/", status: "alive", description: "Lightweight function hosting." },
+        { name: "TinyStacks", url: "https://www.tinystacks.com/", status: "defunct", description: "Domain listed for sale; project no longer operating." },
+        { name: "Upsun (formerly Platform.sh)", url: "https://platform.sh", status: "alive", description: "Highly flexible PaaS with predictable pricing — customize resources, runtimes, environments. Self-service developer flexibility." },
+        { name: "Zeabur", url: "https://zeabur.com", status: "alive", description: "AI DevOps engineer — an agent that runs your infrastructure while AI writes your code." },
+        { name: "Zimki", url: "https://www.slideshare.net/swardley/zimki-2006", status: "defunct", description: "Historical: one of the original platform-as-a-service offerings, from Canon." },
       ]
     },
     {
@@ -570,12 +855,13 @@ const DATA = {
       blurb: "Ephemeral, code-execution sandboxes and AI-grade compute harnesses.",
       accent: "plum",
       items: [
-        ["Adaptive", "https://www.adaptive.live/"],
-        ["Beam Cloud", "https://www.beam.cloud/"],
-        ["Daytona", "https://www.daytona.io/"],
-        ["E2B", "https://e2b.dev/"],
-        ["Modal", "https://modal.com"],
-        ["Runloop", "https://www.runloop.ai/"]
+        { name: "Adaptive", url: "https://www.adaptive.live/", status: "alive", description: "Enterprise-grade access control plane for human, workload, and AI identities in hybrid environments." },
+        { name: "Beam Cloud", url: "https://www.beam.cloud/", status: "alive", description: "AI infrastructure for developers — sandboxes, inference, and training with ultrafast boot times and instant autoscaling." },
+        { name: "Daytona", url: "https://www.daytona.io/", github: "https://github.com/daytonaio/daytona", status: "alive", description: "Secure infrastructure for running AI-generated code with 90ms environment creation, stateful operations, and enterprise-grade security." },
+        { name: "E2B", url: "https://e2b.dev/", github: "https://github.com/e2b-dev/e2b", status: "alive", description: "Secure computers/sandboxes for AI agents with real-world tools — used by 88% of Fortune 100 companies for agentic workflows." },
+        { name: "Modal", url: "https://modal.com", status: "alive", description: "Serverless platform for AI and data teams — bring your own code to run CPU, GPU, and data-intensive compute at scale." },
+        { name: "Runloop", url: "https://www.runloop.ai/", status: "alive", description: "AI agent accelerator — launch agents on secure code sandboxes, refine with evaluations, productionize on enterprise infrastructure." },
+        { name: "RunPod", url: "https://www.runpod.io", status: "alive", description: "GPU cloud for AI training and inference workloads." },
       ]
     },
     {
@@ -585,15 +871,17 @@ const DATA = {
       blurb: "Static-first hosting, edge CDNs, and frontend deployment.",
       accent: "green",
       items: [
-        ["AWS Amplify", "https://aws.amazon.com/amplify"],
-        ["Cloudflare Pages", "https://pages.cloudflare.com/"],
-        ["Gatsby Cloud", "https://www.gatsbyjs.com/products/cloud/"],
-        ["Github Pages", "https://pages.github.com/"],
-        ["GitLab Pages", "https://docs.gitlab.com/ee/user/project/pages/"],
-        ["Glitch", "https://glitch.com/"],
-        ["layer0", "https://www.layer0.co"],
-        ["Netlify", "https://www.netlify.com"],
-        ["Vercel", "https://vercel.com"]
+        { name: "AWS Amplify", url: "https://aws.amazon.com/amplify", status: "alive", description: "Accelerate full-stack web and mobile app development on AWS — easy to start, easy to scale." },
+        { name: "Cloudflare Pages", url: "https://pages.cloudflare.com/", status: "alive", description: "Build and deploy your next application on Cloudflare's global edge network." },
+        { name: "Firebase Hosting", url: "https://firebase.google.com/products/hosting", status: "alive", description: "Google's fast, secure web app hosting with one-command deploys and global CDN." },
+        { name: "Gatsby Cloud", url: "https://www.gatsbyjs.com/products/cloud/", status: "defunct", description: "Sunset; the page now serves Netlify's announcement of the cloud platform's evolution." },
+        { name: "Github Pages", url: "https://pages.github.com/", status: "alive", description: "Websites for you and your projects — hosted directly from your GitHub repository. Just edit, push, live." },
+        { name: "GitLab Pages", url: "https://docs.gitlab.com/ee/user/project/pages/", status: "alive", description: "Static site hosting integrated into GitLab's CI/CD pipelines." },
+        { name: "Glitch", url: "https://glitch.com/", status: "defunct", description: "Web hosting is being phased out — see the official announcement on the Glitch blog." },
+        { name: "layer0", url: "https://www.layer0.co", status: "defunct", description: "Site offline; rebranded to Edgio, which itself was later acquired and wound down." },
+        { name: "Netlify", url: "https://www.netlify.com", status: "alive", description: "Push your ideas to the web — create with AI or code, deploy instantly on production infrastructure. Now also home to the former Gatsby Cloud." },
+        { name: "Surge.sh", url: "https://surge.sh", status: "alive", description: "Static publishing for front-end developers; one-command deploys to a global CDN." },
+        { name: "Vercel", url: "https://vercel.com", github: "https://github.com/vercel/vercel", status: "alive", description: "Build and deploy the best web experiences with the AI Cloud — frameworks, workflows, and infrastructure for a faster, more personalized web." },
       ]
     },
     {
@@ -603,11 +891,14 @@ const DATA = {
       blurb: "Function-as-a-Service and edge runtimes that deliver code globally.",
       accent: "rust",
       items: [
-        ["AWS Lambda", "https://aws.amazon.com/lambda/"],
-        ["Azure Functions", "https://docs.microsoft.com/en-us/azure/azure-functions/"],
-        ["Cloudflare Workers", "https://workers.cloudflare.com/"],
-        ["Deno Deploy", "https://deno.com/deploy"],
-        ["Suborbital Atmo", "https://github.com/suborbital/atmo"]
+        { name: "Akamai Functions (formerly Fermyon Spin)", url: "https://www.fermyon.com", status: "alive", description: "WebAssembly-based serverless platform, now part of Akamai." },
+        { name: "AWS Lambda", url: "https://aws.amazon.com/lambda/", status: "alive", description: "Serverless compute service — run code without provisioning servers; pay only for compute time consumed." },
+        { name: "Azure Functions", url: "https://docs.microsoft.com/en-us/azure/azure-functions/", status: "alive", description: "Event-driven and scheduled serverless compute on Azure — build APIs, react to DB changes, process IoT streams." },
+        { name: "Cloudflare Workers", url: "https://workers.cloudflare.com/", status: "alive", description: "Serverless code execution on Cloudflare's global edge network." },
+        { name: "Deno Deploy", url: "https://deno.com/deploy", status: "alive", description: "Global edge platform for anything that runs with JavaScript or TypeScript." },
+        { name: "Fastly Compute", url: "https://www.fastly.com/products/edge-compute", status: "alive", description: "Wasm edge computing on Fastly's global network — fast, secure, programmable delivery." },
+        { name: "Suborbital e2core (formerly Atmo)", url: "https://github.com/suborbital/atmo", github: "https://github.com/suborbital/e2core", status: "alive", description: "Server for sandboxed third-party plugins, powered by WebAssembly." },
+        { name: "Wasmer Edge", url: "https://wasmer.io/products/edge", status: "alive", description: "WebAssembly-based edge platform for running portable workloads close to users." },
       ]
     },
     {
@@ -617,49 +908,54 @@ const DATA = {
       blurb: "Open-source and BYO-cloud platforms that emulate PaaS on your infra.",
       accent: "azure",
       items: [
-        ["Argonaut", "https://argonaut.dev/"],
-        ["Azure Krustlet", "https://krustlet.dev/"],
-        ["BoltOps", "https://www.boltops.com/"],
-        ["Canine", "https://canine.sh/"],
-        ["Caprover", "https://caprover.com/"],
-        ["Cloud Foundry", "https://www.cloudfoundry.org/"],
-        ["Coolify", "https://coolify.io/"],
-        ["Deckrun", "https://deckrun.com/"],
-        ["Digger", "https://digger.dev/"],
-        ["Disco", "https://disco.cloud/"],
-        ["dyrector.io", "https://dyrector.io/"],
-        ["Docker Swarm", "https://docs.docker.com/engine/swarm/"],
-        ["Dokku", "https://dokku.com"],
-        ["Dokploy", "https://github.com/dokploy/dokploy"],
-        ["Flynn", "https://github.com/flynn/flynn"],
-        ["Hatchbox", "https://www.hatchbox.io"],
-        ["Hephy", "https://web.teamhephy.com/"],
-        ["Humanitec", "https://humanitec.com/"],
-        ["Kubeless", "https://kubeless.io/"],
-        ["Komodor", "https://komodor.com/"],
-        ["Kubernetes", "https://kubernetes.io/"],
-        ["Kubero", "https://github.com/kubero-dev/kubero"],
-        ["Knative", "https://knative.dev/docs/"],
-        ["Linx", "https://linx.software"],
-        ["Northflank", "https://northflank.com/"],
-        ["Openfaas", "https://www.openfaas.com/"],
-        ["Openshift", "https://www.redhat.com/en/technologies/cloud-computing/openshift"],
-        ["Otomi", "https://otomi.io/"],
-        ["Piku", "https://github.com/piku/piku"],
-        ["Podi", "https://github.com/coderofsalvation/podi"],
-        ["Porter", "https://porter.run"],
-        ["Qovery", "https://www.qovery.com/"],
-        ["Setops", "https://www.setops.co/"],
-        ["Skaffold", "https://skaffold.dev/"],
-        ["Spacecloud", "https://space-cloud.io/"],
-        ["Spaceship", "https://spaceship.run"],
-        ["Stacksnap", "https://klo.dev/stacksnap"],
-        ["TrueFoundry", "https://truefoundry.com"],
-        ["Uncloud", "https://uncloud.run"],
-        ["VMware Tanzu", "https://tanzu.vmware.com"],
-        ["ZaneOps", "https://zaneops.dev"],
-        ["Zeabur", "https://zeabur.com"],
-        ["Zeet", "https://zeet.co"]
+        { name: "Akamai App Platform (formerly Otomi)", url: "https://otomi.io/", status: "alive", description: "Kubernetes app platform; now part of Akamai." },
+        { name: "Argonaut", url: "https://argonaut.dev/", status: "defunct", description: "argonaut.dev now serves WarpBuild; the original Argonaut platform is no longer operating." },
+        { name: "Azure Krustlet", url: "https://krustlet.dev/", status: "alive", description: "Kubernetes Kubelet in Rust for running WebAssembly modules in a Kubernetes cluster." },
+        { name: "BoltOps", url: "https://www.boltops.com/", status: "alive", description: "DevOps-as-a-service — builds and deploys customizable, scalable, secure infrastructure so you can focus on your product." },
+        { name: "Canine", url: "https://canine.sh/", status: "alive", description: "Open source PaaS for Kubernetes — deploy apps to your own cluster with the simplicity of Heroku and the power of Kubernetes." },
+        { name: "Caprover", url: "https://caprover.com/", github: "https://github.com/caprover/caprover", status: "alive", description: "Scalable, free, and self-hosted PaaS." },
+        { name: "Cloud Foundry", url: "https://www.cloudfoundry.org/", github: "https://github.com/cloudfoundry", status: "alive", description: "Trusted open source platform for cloud-native application development." },
+        { name: "Coolify", url: "https://coolify.io/", github: "https://github.com/coollabsio/coolify", status: "alive", description: "Self-hosting platform with superpowers — deploy apps, databases, and 280+ services. Open-source alternative to Heroku." },
+        { name: "Deckrun", url: "https://deckrun.com/", status: "alive", description: "Deploy and manage apps on Kubernetes with one config file and one command. No YAML, no Helm, no DevOps dependency." },
+        { name: "Devtron", url: "https://devtron.ai", github: "https://github.com/devtron-labs/devtron", status: "alive", description: "Open-source software delivery workflow for Kubernetes." },
+        { name: "Digger", url: "https://digger.dev/", status: "alive", description: "Self-hostable infrastructure tooling — Terraform CI/CD, drift detection, PR automation, and state management." },
+        { name: "Disco", url: "https://disco.cloud/", status: "alive", description: "Self-hosted Heroku alternative for teams with many services and environments — git push deploys, zero-downtime releases, automatic SSL." },
+        { name: "Docker Swarm", url: "https://docs.docker.com/engine/swarm/", status: "alive", description: "Docker's built-in container orchestrator." },
+        { name: "Dokku", url: "https://dokku.com", github: "https://github.com/dokku/dokku", status: "alive", description: "The smallest PaaS implementation you've ever seen — Heroku-style git push deploys on your own server." },
+        { name: "Dokploy", url: "https://github.com/dokploy/dokploy", github: "https://github.com/dokploy/dokploy", status: "alive", description: "Open source alternative to Vercel, Netlify, and Heroku." },
+        { name: "dyrector.io", url: "https://dyrector.io/", status: "alive", description: "Self-hosted continuous delivery & deployment platform with version management." },
+        { name: "Easypanel", url: "https://easypanel.io", status: "alive", description: "Modern server control panel for deploying apps and databases." },
+        { name: "Flynn", url: "https://github.com/flynn/flynn", github: "https://github.com/flynn/flynn", status: "defunct", description: "Next-generation open source platform-as-a-service. Project is unmaintained per its README." },
+        { name: "Hatchbox", url: "https://www.hatchbox.io", status: "alive", description: "Cost-effective hosting for Rails, Ruby, and Node.js — deploy to your own infrastructure." },
+        { name: "Hephy", url: "https://web.teamhephy.com/", status: "defunct", description: "Site offline; community-maintained successor to Deis is no longer reachable." },
+        { name: "Humanitec", url: "https://humanitec.com/", status: "alive", description: "Internal Developer Platform for the enterprise — reduce cognitive load, drive standardization, slash time to market." },
+        { name: "Kamal", url: "https://kamal-deploy.org", github: "https://github.com/basecamp/kamal", status: "alive", description: "Deploy web apps anywhere from bare metal to cloud VMs — by 37signals." },
+        { name: "Knative", url: "https://knative.dev/docs/", github: "https://github.com/knative", status: "alive", description: "Kubernetes-based platform for serverless workloads." },
+        { name: "Komodor", url: "https://komodor.com/", status: "alive", description: "Autonomous AI SRE platform for Kubernetes — battle-tested in enterprise-scale production environments." },
+        { name: "Kubeless", url: "https://kubeless.io/", status: "defunct", description: "Site offline; project was archived." },
+        { name: "Kubernetes", url: "https://kubernetes.io/", github: "https://github.com/kubernetes/kubernetes", status: "alive", description: "Production-grade container orchestration." },
+        { name: "Kubero", url: "https://github.com/kubero-dev/kubero", github: "https://github.com/kubero-dev/kubero", status: "alive", description: "Free, self-hosted PaaS alternative to Heroku/Netlify/Coolify/Vercel/Dokku — running on Kubernetes." },
+        { name: "Linx", url: "https://linx.software", status: "alive", description: "Low-code iPaaS platform for integration, API development, and business process automation." },
+        { name: "Northflank", url: "https://northflank.com/", status: "alive", description: "Comprehensive developer platform designed for scale — seamlessly deploy and release any project on our cloud or yours." },
+        { name: "Openfaas", url: "https://www.openfaas.com/", github: "https://github.com/openfaas/faas", status: "alive", description: "Serverless functions made simple with Kubernetes." },
+        { name: "Openshift", url: "https://www.redhat.com/en/technologies/cloud-computing/openshift", status: "alive", description: "Red Hat's unified application development platform — build, modernize, and deploy applications at scale on hybrid cloud." },
+        { name: "Piku", url: "https://github.com/piku/piku", github: "https://github.com/piku/piku", status: "alive", description: "The tiniest PaaS you've ever seen — git push deployments to your own servers." },
+        { name: "Plural", url: "https://www.plural.sh", github: "https://github.com/pluralsh/plural", status: "alive", description: "Open-source platform for deploying applications on Kubernetes." },
+        { name: "Podi", url: "https://github.com/coderofsalvation/podi", github: "https://github.com/coderofsalvation/podi", status: "alive", description: "A cute (~7kb) gitops utility to turn servers into PaaS platforms using only git+ssh." },
+        { name: "Porter", url: "https://porter.run", status: "alive", description: "Deploy apps effortlessly to your AWS, GCP, or Azure account. SOC 2 & HIPAA compliant infrastructure with autoscaling — git to prod in 60 seconds." },
+        { name: "Qovery", url: "https://www.qovery.com/", status: "alive", description: "Kubernetes management platform built for the AI era — single standardized API spoken by Terraform provider, MCP server, CLI, and AI Skill." },
+        { name: "Setops", url: "https://www.setops.co/", status: "defunct", description: "Site offline." },
+        { name: "Skaffold", url: "https://skaffold.dev/", github: "https://github.com/GoogleContainerTools/skaffold", status: "alive", description: "Fast, repeatable, simple workflow for Kubernetes development." },
+        { name: "Spacecloud", url: "https://space-cloud.io/", status: "alive", description: "Instant realtime APIs for serverless apps — simplifies building serverless apps at scale." },
+        { name: "Spaceship / Shipmate", url: "https://spaceship.run", status: "alive", description: "Launch your code with one click." },
+        { name: "Stacksnap", url: "https://klo.dev/stacksnap", status: "defunct", description: "Page returns 404 on klo.dev — Stacksnap is no longer available." },
+        { name: "TrueFoundry", url: "https://truefoundry.com", status: "alive", description: "Enterprise-grade AI Gateway combining LLM, MCP, and Agent Gateways — connect, monitor, and govern agentic AI applications." },
+        { name: "Uncloud", url: "https://uncloud.run", status: "alive", description: "Take Docker Compose apps to production with zero-downtime deployments, automatic HTTPS, and cross-machine scaling — without Kubernetes complexity." },
+        { name: "VMware Tanzu", url: "https://tanzu.vmware.com", status: "alive", description: "VMware's enterprise PaaS — accelerate ideas to production by simplifying and integrating processes and tools." },
+        { name: "Werf", url: "https://werf.io", github: "https://github.com/werf/werf", status: "alive", description: "GitOps tool by Flant for delivering applications to Kubernetes." },
+        { name: "ZaneOps", url: "https://zaneops.dev", status: "alive", description: "Self-hosted, open source PaaS for static sites, web apps, databases, crons, and workers — using Docker Swarm." },
+        { name: "Zeabur", url: "https://zeabur.com", status: "alive", description: "AI DevOps engineer — an agent that runs your infrastructure while AI writes your code." },
+        { name: "Zeet", url: "https://zeet.co", status: "alive", description: "Combines CI/CD, Kubernetes management, networking, and observability into one easy-to-use dashboard for devs and SRE." },
       ]
     },
     {
@@ -669,35 +965,35 @@ const DATA = {
       blurb: "Browser-based dev environments and remote workspace platforms.",
       accent: "ochre",
       items: [
-        ["Adaptive", "https://www.adaptive.live/"],
-        ["Cocalc", "https://cocalc.com/"],
-        ["Codepen", "https://codepen.io/"],
-        ["Coder.com", "https://coder.com/"],
-        ["Codesandbox", "https://codesandbox.io/"],
-        ["Codetasty", "https://codetasty.com/"],
-        ["Cloud9", "https://aws.amazon.com/cloud9/"],
-        ["Eclipse Che", "https://www.eclipse.org/che/"],
-        ["Encore", "https://encore.dev/"],
-        ["Gitpod", "https://www.gitpod.io/"],
-        ["Okteto", "https://okteto.com/"],
-        ["Paizacloud", "https://paiza.cloud/en/jupyter-notebook-online"],
-        ["Release", "https://release.com/"],
-        ["Replit", "https://replit.com/"],
-        ["Signadot", "https://www.signadot.com/"],
-        ["Stackblitz", "https://stackblitz.com/"],
-        ["Sourcelair", "https://ide.sourcelair.com/home"]
+        { name: "Cocalc", url: "https://cocalc.com/", status: "alive", description: "Collaborative calculation and data science platform in the browser." },
+        { name: "Codepen", url: "https://codepen.io/", status: "alive", description: "Front-end playground for HTML, CSS, and JavaScript." },
+        { name: "Coder.com", url: "https://coder.com/", github: "https://github.com/coder/coder", status: "alive", description: "Enterprise AI development infrastructure — give developers a secure, governed environment to run AI coding agents at scale." },
+        { name: "Codesandbox", url: "https://codesandbox.io/", status: "alive", description: "Instant cloud development environments — code, collaborate, and ship projects of any size from any device." },
+        { name: "Codetasty", url: "https://codetasty.com/", status: "defunct", description: "Site offline; project no longer reachable." },
+        { name: "Cloud9", url: "https://aws.amazon.com/cloud9/", status: "alive", description: "AWS browser-based IDE that lets you write, run, and debug code with just a browser." },
+        { name: "Eclipse Che", url: "https://www.eclipse.org/che/", github: "https://github.com/eclipse-che/che", status: "alive", description: "Kubernetes-native cloud IDE." },
+        { name: "Encore", url: "https://encore.dev/", github: "https://github.com/encoredev/encore", status: "alive", description: "Open-source TypeScript backend framework for distributed systems with declarative infrastructure-as-code." },
+        { name: "GitHub Codespaces", url: "https://github.com/features/codespaces", status: "alive", description: "Instant cloud-powered dev environments — spin up a fully configured environment from any GitHub repo." },
+        { name: "Ona (formerly Gitpod)", url: "https://www.gitpod.io/", status: "alive", description: "Run a team of AI software engineers in the cloud — orchestrated, governed, secured at the kernel." },
+        { name: "Okteto", url: "https://okteto.com/", status: "alive", description: "Fast, flexible Kubernetes development environments — ephemeral, automated, scaling with your team." },
+        { name: "Paizacloud", url: "https://paiza.cloud/en/jupyter-notebook-online", status: "alive", description: "Browser-based web development environment for Rails, PHP, Java, Django, Node.js, and more." },
+        { name: "Release", url: "https://release.com/", status: "alive", description: "Vercel-style git-push deploys for full-stack apps in your own cloud — perfect for teams leaving Heroku or outgrowing Vercel's serverless limits." },
+        { name: "Replit", url: "https://replit.com/", status: "alive", description: "Build and deploy software collaboratively with the power of AI — without spending a second on setup." },
+        { name: "Signadot", url: "https://www.signadot.com/", status: "alive", description: "Fast ephemeral Kubernetes sandboxes for every code change — from developers or coding agents — validated against real dependencies." },
+        { name: "Sourcelair", url: "https://ide.sourcelair.com/home", status: "alive", description: "Online IDE supporting 25+ languages with Git, GitHub, and Heroku integration." },
+        { name: "Stackblitz", url: "https://stackblitz.com/", status: "alive", description: "Instant in-browser dev environments powered by WebContainers." },
       ]
     }
   ]
 };
 
 const accentClass = {
-  indigo: { dot: 'bg-brand-indigo', text: 'text-brand-indigo' },
-  plum:   { dot: 'bg-brand-plum',   text: 'text-brand-plum'   },
-  green:  { dot: 'bg-brand-green',  text: 'text-brand-green'  },
-  rust:   { dot: 'bg-brand-rust',   text: 'text-brand-rust'   },
-  azure:  { dot: 'bg-brand-azure',  text: 'text-brand-azure'  },
-  ochre:  { dot: 'bg-brand-ochre',  text: 'text-brand-ochre'  },
+  indigo: { dot: 'bg-brand-indigo', text: 'text-brand-indigo', hex: '#4f3df0' },
+  plum:   { dot: 'bg-brand-plum',   text: 'text-brand-plum',   hex: '#7a3aa6' },
+  green:  { dot: 'bg-brand-green',  text: 'text-brand-green',  hex: '#0d8f6f' },
+  rust:   { dot: 'bg-brand-rust',   text: 'text-brand-rust',   hex: '#c84922' },
+  azure:  { dot: 'bg-brand-azure',  text: 'text-brand-azure',  hex: '#1d6fd6' },
+  ochre:  { dot: 'bg-brand-ochre',  text: 'text-brand-ochre',  hex: '#a87a14' },
 };
 
 function domainOf(url) {
@@ -711,37 +1007,43 @@ function favicon(url) {
 function initials(name) {
   return name.replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).map(s => s[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
 }
+function inferGithub(item) {
+  if (item.github) return item.github;
+  try {
+    const u = new URL(item.url);
+    if (u.hostname === 'github.com') return item.url;
+  } catch {}
+  return null;
+}
 
 function setBuildDate() {
   const now = new Date();
   const fmtDate = now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
   const fmtTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
   const iso = now.toISOString().slice(0, 10);
-  const day = String(now.getDate()).padStart(2, '0');
-  const monShort = now.toLocaleDateString('en-US', { month: 'short' }).toLowerCase();
 
   const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
   set('build-date', iso);
   set('build-time', fmtTime);
   set('foot-date', fmtDate);
   set('foot-year', now.getFullYear());
-  set('stat-updated', day);
-  set('stat-updated-month', `${monShort} ’${String(now.getFullYear()).slice(-2)}`);
 }
 
+function escapeAttr(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
 function render() {
   const main = document.getElementById('landscape');
   const chips = document.getElementById('chips');
   const rail = document.getElementById('rail');
 
-  let total = 0;
+  let total = 0, alive = 0, defunct = 0;
   let mainHTML = '';
-  // sharp newspaper-style chip strip — chips share borders, no rounding
   let chipsHTML = `<button class="chip text-[11.5px] font-medium px-3 py-1.5 border border-rule-strong bg-paper hover:bg-paper2" data-cat="all" data-active="true">All</button>`;
   let railHTML = `<li><a href="#top" class="rail-link group flex items-center gap-2.5 text-[12px] text-ink-500 hover:text-ink-900 py-1"><span class="rail-bullet w-1 h-1 bg-ink-300 transition-transform"></span>Overview</a></li>`;
 
-  DATA.categories.forEach(cat => {
+  DATA.categories.forEach((cat, ci) => {
     total += cat.items.length;
     const a = accentClass[cat.accent];
 
@@ -760,14 +1062,17 @@ function render() {
     </li>`;
 
     let tiles = '';
-    cat.items.forEach(([name, url, note]) => {
-      const d = domainOf(url);
-      const fi = favicon(url);
-      const ini = initials(name);
+    cat.items.forEach((item, ii) => {
+      const status = item.status || 'alive';
+      if (status === 'alive') alive++; else if (status === 'defunct') defunct++;
+      const d = domainOf(item.url);
+      const fi = favicon(item.url);
+      const ini = initials(item.name);
       tiles += `
-        <a href="${url}" target="_blank" rel="noopener noreferrer"
-           class="tile bg-paper border border-rule p-3.5 -mt-px -ml-px flex flex-col gap-1.5 min-h-[112px]"
-           data-name="${name.toLowerCase()}" data-domain="${d.toLowerCase()}">
+        <button type="button"
+           class="tile bg-paper border border-rule p-3.5 -mt-px -ml-px flex flex-col gap-1.5 min-h-[88px] text-left w-full"
+           data-cat-idx="${ci}" data-item-idx="${ii}" data-status="${status}"
+           data-name="${escapeAttr(item.name.toLowerCase())}" data-domain="${escapeAttr(d.toLowerCase())}">
           <div class="flex items-start gap-2.5">
             <div class="w-8 h-8 bg-white border border-rule grid place-items-center overflow-hidden flex-shrink-0">
               ${fi
@@ -775,13 +1080,12 @@ function render() {
                 : `<span class="font-mono mono-tight text-[11px] font-semibold text-ink-700">${ini}</span>`}
             </div>
             <div class="flex-1 min-w-0">
-              <div class="tile-name text-[13px] font-semibold leading-tight text-ink-900 truncate">${name}</div>
+              <div class="tile-name text-[13px] font-semibold leading-tight text-ink-900 truncate">${item.name}</div>
               <div class="font-mono mono-tight text-[10px] text-ink-400 truncate mt-0.5">${d}</div>
             </div>
             <svg class="tile-arrow opacity-0 text-ink-700 flex-shrink-0" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
           </div>
-          ${note ? `<div class="text-[11.5px] text-ink-500 leading-snug mt-auto clamp-2">${note}</div>` : ''}
-        </a>`;
+        </button>`;
     });
 
     mainHTML += `
@@ -813,6 +1117,8 @@ function render() {
   const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
   setText('stat-total', total);
   setText('stat-total-big', total);
+  setText('stat-alive-big', alive);
+  setText('stat-defunct-big', defunct);
   setText('stat-cats', cats);
   setText('stat-cats-big', cats);
 
@@ -825,9 +1131,47 @@ function render() {
     applySearch();
   });
 
+  // tile click → open modal
+  main.addEventListener('click', e => {
+    const tile = e.target.closest('.tile');
+    if (!tile) return;
+    const ci = parseInt(tile.dataset.catIdx, 10);
+    const ii = parseInt(tile.dataset.itemIdx, 10);
+    const cat = DATA.categories[ci];
+    const item = cat?.items[ii];
+    if (item) openModal(item, cat);
+  });
+
   // inline search
   const search = document.getElementById('search');
-  search.addEventListener('input', applySearch);
+  const searchClear = document.getElementById('search-clear');
+  search.addEventListener('input', () => {
+    if (searchClear) searchClear.classList.toggle('hidden', !search.value);
+    applySearch();
+  });
+  if (searchClear) {
+    searchClear.addEventListener('click', e => {
+      e.preventDefault();
+      search.value = '';
+      searchClear.classList.add('hidden');
+      applySearch();
+      search.focus();
+    });
+  }
+
+  // alive-only filter
+  const aliveToggle = document.getElementById('alive-toggle');
+  const aliveInput = document.getElementById('alive-toggle-input');
+  const aliveCount = document.getElementById('alive-toggle-count');
+  if (aliveCount) aliveCount.textContent = String(alive).padStart(3, '0');
+  aliveToggle.addEventListener('click', e => {
+    // the native checkbox is sr-only — toggle on label click
+    e.preventDefault();
+    const next = aliveToggle.dataset.active !== 'true';
+    aliveToggle.dataset.active = next ? 'true' : 'false';
+    aliveInput.checked = next;
+    applySearch();
+  });
 
   const isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent);
   const kbdEl = document.getElementById('search-kbd');
@@ -875,6 +1219,8 @@ function applySearch() {
   const q = document.getElementById('search').value.trim().toLowerCase();
   const activeChip = document.querySelector('#chips .chip[data-active="true"]');
   const activeCat = activeChip?.dataset.cat || 'all';
+  const aliveToggle = document.getElementById('alive-toggle');
+  const aliveOnly = aliveToggle?.dataset.active === 'true';
   let visible = 0;
   document.querySelectorAll('section[data-cat]').forEach(sec => {
     const allowedByChip = (activeCat === 'all' || sec.dataset.cat === activeCat);
@@ -884,32 +1230,113 @@ function applySearch() {
     }
     let secVisible = 0;
     sec.querySelectorAll('.tile').forEach(tile => {
-      const match = !q || tile.dataset.name.includes(q) || tile.dataset.domain.includes(q);
+      const matchQ = !q || tile.dataset.name.includes(q) || tile.dataset.domain.includes(q);
+      const matchStatus = !aliveOnly || tile.dataset.status === 'alive';
+      const match = matchQ && matchStatus;
       tile.style.display = match ? '' : 'none';
       if (match) { secVisible++; visible++; }
     });
-    sec.style.display = (q && secVisible === 0) ? 'none' : '';
+    const filtering = q || aliveOnly;
+    sec.style.display = (filtering && secVisible === 0) ? 'none' : '';
   });
   const empty = document.getElementById('empty');
-  document.getElementById('empty-q').textContent = `"${q}"`;
-  empty.classList.toggle('hidden', visible > 0 || !q);
+  const filtering = q || aliveOnly;
+  document.getElementById('empty-q').textContent = q ? `"${q}"` : 'the current filters';
+  empty.classList.toggle('hidden', visible > 0 || !filtering);
 }
 
 render();
 setBuildDate();
 
+/* ===== Detail Modal ===== */
+const modalEl = document.getElementById('modal');
+const modalBackdrop = document.getElementById('modal-backdrop');
+let lastFocused = null;
+
+function openModal(item, cat) {
+  lastFocused = document.activeElement;
+  const a = accentClass[cat.accent];
+  const d = domainOf(item.url);
+  const fi = favicon(item.url);
+  const ini = initials(item.name);
+  const gh = inferGithub(item);
+  const status = item.status || 'alive';
+
+  // logo
+  const logoEl = document.getElementById('modal-logo');
+  logoEl.innerHTML = fi
+    ? `<img src="${fi}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${ini}'}))">`
+    : `<span>${ini}</span>`;
+
+  // text
+  document.getElementById('modal-title').textContent = item.name;
+  document.getElementById('modal-domain').textContent = d || item.url;
+  document.getElementById('modal-cat-text').textContent = `${cat.num} · ${cat.title}`;
+  document.getElementById('modal-cat-dot').style.background = a.hex;
+
+  // status pill
+  const statusPill = document.getElementById('modal-status-pill');
+  statusPill.dataset.status = status;
+  document.getElementById('modal-status-text').textContent = status;
+
+  document.getElementById('modal-description').textContent = item.description || '—';
+
+  // github
+  const ghBlock = document.getElementById('modal-github');
+  if (gh) {
+    document.getElementById('modal-github-link').href = gh;
+    document.getElementById('modal-github-text').textContent = gh.replace(/^https?:\/\/(www\.)?/, '');
+    ghBlock.style.display = '';
+  } else {
+    ghBlock.style.display = 'none';
+  }
+
+  // landing CTA
+  const cta = document.getElementById('modal-cta');
+  cta.href = item.url;
+  cta.querySelector('span').textContent = status === 'defunct' ? 'Visit URL anyway' : 'Landing page';
+
+  modalEl.dataset.open = 'true';
+  modalBackdrop.dataset.open = 'true';
+  modalEl.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('modal-cta').focus(), 30);
+}
+
+function closeModal() {
+  modalEl.dataset.open = 'false';
+  modalBackdrop.dataset.open = 'false';
+  modalEl.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (lastFocused && typeof lastFocused.focus === 'function') {
+    try { lastFocused.focus(); } catch {}
+  }
+}
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+modalBackdrop.addEventListener('click', closeModal);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && modalEl.dataset.open === 'true') {
+    e.preventDefault();
+    closeModal();
+  }
+});
+
 /* ===== Command palette ===== */
 const PALETTE_ITEMS = (() => {
   const out = [];
   DATA.categories.forEach(cat => {
-    cat.items.forEach(([name, url, note]) => {
+    cat.items.forEach(item => {
       out.push({
-        name, url, note: note || '',
-        domain: domainOf(url),
+        name: item.name,
+        url: item.url,
+        item,
+        cat,
+        domain: domainOf(item.url),
         catId: cat.id,
         catTitle: cat.title,
         catNum: cat.num,
-        haystack: (name + ' ' + domainOf(url) + ' ' + cat.title + ' ' + (note || '')).toLowerCase(),
+        haystack: (item.name + ' ' + domainOf(item.url) + ' ' + cat.title + ' ' + (item.description || '')).toLowerCase(),
       });
     });
   });
@@ -974,7 +1401,7 @@ function rankItems(q) {
 function paletteItemHTML(it, idx, q) {
   const fi = favicon(it.url);
   const ini = initials(it.name);
-  return `<div class="palette-item" role="option" data-idx="${idx}" data-active="${idx === paletteActiveIdx}" data-url="${it.url}">
+  return `<div class="palette-item" role="option" data-idx="${idx}" data-active="${idx === paletteActiveIdx}">
     <div class="palette-favicon">
       ${fi ? `<img src="${fi}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${ini}'}))">` : `<span>${ini}</span>`}
     </div>
@@ -1028,14 +1455,12 @@ function setActiveIdx(idx) {
 }
 
 function activateCurrent() {
-  const items = paletteList.querySelectorAll('.palette-item');
-  const item = items[paletteActiveIdx];
-  if (!item) return;
-  const url = item.dataset.url;
-  if (url) {
-    closePalette();
-    window.open(url, '_blank', 'noopener,noreferrer');
-  }
+  const items = rankItems(paletteInput.value.trim());
+  const it = items[paletteActiveIdx];
+  if (!it) return;
+  closePalette();
+  // open the modal for the selected item instead of jumping straight to the link
+  openModal(it.item, it.cat);
 }
 
 paletteInput.addEventListener('input', e => renderPaletteResults(e.target.value.trim()));
@@ -1054,11 +1479,9 @@ paletteList.addEventListener('mousemove', e => {
 paletteList.addEventListener('click', e => {
   const item = e.target.closest('.palette-item');
   if (!item) return;
-  const url = item.dataset.url;
-  if (url) {
-    closePalette();
-    window.open(url, '_blank', 'noopener,noreferrer');
-  }
+  const idx = parseInt(item.dataset.idx, 10);
+  setActiveIdx(idx);
+  activateCurrent();
 });
 paletteBackdrop.addEventListener('click', closePalette);
 </script>
