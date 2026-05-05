@@ -17,7 +17,6 @@ Following providers and products are listed in alphabetical order.
 - [AWS App Runner](https://aws.amazon.com/apprunner)
 - [AWS ECS](https://aws.amazon.com/ecs)
 - [AZIN](https://azin.run)
-- [Backery](https://backery.io/)
 - [Clever Cloud](https://www.clever-cloud.com/)
 - [Cloud 66](https://www.cloud66.com/) on your own cloud or server. 
 - [Coherence](https://www.withcoherence.com/?ref=awesome-paas) in your own AWS or GCP account. 
