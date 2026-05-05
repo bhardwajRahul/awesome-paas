@@ -23,7 +23,6 @@ Following providers and products are listed in alphabetical order.
 - [AWS ECS](https://aws.amazon.com/ecs) `alive` — Amazon's fully managed container orchestration service.
 - [AZIN](https://azin.run) `alive` — auto-deploys into your own GCP, AWS, or Azure account from git push to production.
 - [Back4app Web Deployment](https://www.back4app.com/web-deployment-platform) `alive` — deploy full-stack web apps from GitHub on managed, secure infrastructure.
-- [Backery](https://backery.io/) `defunct` — domain no longer points to the project (currently redirects to an unrelated site).
 - [Clever Cloud](https://www.clever-cloud.com/) `alive` — French PaaS to host, deploy, and maintain applications at a controlled cost.
 - [Cloud 66](https://www.cloud66.com/) `alive` — DevOps platform that deploys applications to any cloud provider or your own servers.
 - [Cloudways](https://www.cloudways.com) `alive` — managed cloud hosting across major cloud providers.
