@@ -65,7 +65,7 @@ Following providers and products are listed in alphabetical order.
 - [Gatsby Cloud](https://www.gatsbyjs.com/products/cloud/)
 - [Github Pages](https://pages.github.com/)
 - [GitLab Pages](https://docs.gitlab.com/ee/user/project/pages/)
-- [Glitch](https://glitch.com/)
+- [Glitch](https://glitch.com/) [Defunct] https://blog.glitch.com/post/changes-are-coming-to-glitch/
 - [layer0](https://www.layer0.co) [defunct]
 - [Netlify](https://www.netlify.com)
 - [Vercel](https://vercel.com)
