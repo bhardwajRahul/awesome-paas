@@ -36,6 +36,7 @@ Following providers and products are listed in alphabetical order.
 - [Engine Yard](https://www.engineyard.com) `alive` — managed cloud platform for Ruby on Rails and modern web apps.
 - [Flightcontrol](https://www.flightcontrol.dev?ref=awesome-paas) `alive` — PaaS that deploys directly to your own AWS account; no black box, lock-in, or AWS markups.
 - [Fly.io](https://fly.io) `alive` — global app platform that runs your code close to users.
+- [fortrabbit](https://www.fortrabbit.com) `alive` — PHP as a Service, since 2012, from Germany, two data centers, runs on AWS.
 - [France Nuage](https://france-nuage.fr) `alive` — Sovereign open-source cloud (SSPL-1.0) hosted 100% in France; managed open-source apps and S3 object storage.
 - [Genezio](https://genezio.com) `alive` — full-stack development platform with type-safe client/server communication.
 - [Google Cloud AppEngine](https://cloud.google.com/appengine) `alive` — fully managed serverless platform for web and mobile backends.
