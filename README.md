@@ -69,6 +69,7 @@ Following providers and products are listed in alphabetical order.
 
 #### Sandboxes and Harnesses
 - [Adaptive](https://www.adaptive.live/) `alive` — access control plane for human, workload, and AI identities in hybrid environments.
+- [AgentBox](https://github.com/madarco/agentbox) `alive` — run multiple coding agents (Claude Code, Codex, OpenCode) in parallel sandboxed VMs across local Docker, self-hosted, or cloud (Hetzner, Daytona, Vercel, E2B, DigitalOcean); sub-1s checkpoints, git credentials kept on the host.
 - [Beam Cloud](https://www.beam.cloud/) `alive` — AI infrastructure for sandboxes, inference, and training with ultrafast boot times and instant autoscaling.
 - [Daytona](https://www.daytona.io/) `alive` — secure infrastructure for running AI-generated code with 90ms environment creation and stateful operations.
 - [E2B](https://e2b.dev/) `alive` — secure computers/sandboxes for AI agents; used by 88% of Fortune 100 companies.
