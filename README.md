@@ -30,6 +30,7 @@ Following providers and products are listed in alphabetical order.
 - [Coherence](https://www.withcoherence.com/?ref=awesome-paas) `defunct` — site offline; product was a PaaS in your own AWS or GCP account.
 - [Convox](https://convox.com) `alive` — multi-cloud PaaS with consistent deployment workflows.
 - [Cyclic](https://www.cyclic.sh/) `defunct` — site offline; project was acquired and shut down.
+- [Dada Cloud](https://cloud.dada-tuda.ru) `alive` — Russia-based PaaS with git push deploys, managed PostgreSQL, custom domains with automatic TLS, monitoring, and one-click rollback; free plan, data hosted in Russia.
 - [DeployHQ](https://www.deployhq.com) `alive` — Git-based deployment automation that deploys from GitHub, GitLab, or Bitbucket to servers via SSH/SFTP/S3 with build pipelines and one-click rollback.
 - [Digitalocean App Platform](https://www.digitalocean.com/products/app-platform) `alive` — DigitalOcean's managed PaaS for building, deploying, and scaling apps.
 - [DigitalOcean Functions](https://www.digitalocean.com/products/functions) `alive` — DigitalOcean's serverless functions platform.
