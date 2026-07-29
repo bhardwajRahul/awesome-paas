@@ -8,7 +8,7 @@ In a scenario if you think your (favorite) service is not listed here. Please fe
 
 ### Status
 
-Each entry below is tagged `alive` (still operating) or `defunct` (project ended, domain dead, or repurposed). Verified 2026-05-05.
+Each entry below is tagged `alive` (still operating) or `defunct` (project ended, domain dead, or repurposed). Verified 2026-07-29.
 
 ### Contents
 
@@ -35,7 +35,7 @@ Following providers and products are listed in alphabetical order.
 - [Digitalocean App Platform](https://www.digitalocean.com/products/app-platform) `alive` — DigitalOcean's managed PaaS for building, deploying, and scaling apps.
 - [DigitalOcean Functions](https://www.digitalocean.com/products/functions) `alive` — DigitalOcean's serverless functions platform.
 - [Diploi](https://diploi.com/) `alive` — cloud development environments with one-click hosting; no manual server configuration.
-- [Darkmoon](https://github.com/ASCIT31/Dark-Moon) - Open source autonomous pentest engine (GPL-3.0): AD + Kubernetes + web, evidence trail on every finding, runs on local or hosted models.
+- [Darkmoon](https://github.com/ASCIT31/Dark-Moon) `alive` — open source autonomous pentest engine (GPL-3.0): AD + Kubernetes + web, evidence trail on every finding, runs on local or hosted models.
 - [dotCloud](https://www.docker.com/docker-news-and-press/dotcloud-inc-now-docker-inc) `defunct` — historical; dotCloud became Docker, Inc.
 - [Engine Yard](https://www.engineyard.com) `alive` — managed cloud platform for Ruby on Rails and modern web apps.
 - [Flightcontrol](https://www.flightcontrol.dev?ref=awesome-paas) `alive` — PaaS that deploys directly to your own AWS account; no black box, lock-in, or AWS markups.
@@ -102,13 +102,13 @@ Following providers and products are listed in alphabetical order.
 - [Cloudflare Workers](https://workers.cloudflare.com/) `alive` — serverless code execution on Cloudflare's global edge.
 - [Deno Deploy](https://deno.com/deploy) `alive` — global edge platform for anything that runs with JavaScript or TypeScript.
 - [Fastly Compute](https://www.fastly.com/products/edge-compute) `alive` — Wasm edge computing on Fastly's global network.
-- [Suborbital e2core (formerly Atmo)](https://github.com/suborbital/atmo) `alive` — server for sandboxed third-party plugins, powered by WebAssembly.
+- [Suborbital e2core (formerly Atmo)](https://github.com/suborbital/e2core) `defunct` — server for sandboxed third-party plugins powered by WebAssembly; repo dormant since Aug 2023 and suborbital.dev now serves an unrelated site.
 - [Wasmer Edge](https://wasmer.io/products/edge) `alive` — WebAssembly-based edge platform.
 
 #### Self-Hosted PaaS or PaaS emulated
 - [Akamai App Platform (formerly Otomi)](https://otomi.io/) `alive` — Kubernetes app platform; now part of Akamai.
 - [Argonaut](https://argonaut.dev/) `defunct` — argonaut.dev now serves WarpBuild; the original Argonaut platform is no longer operating.
-- [Azure Krustlet](https://krustlet.dev/) `alive` — Kubernetes Kubelet in Rust for running WebAssembly modules.
+- [Azure Krustlet](https://krustlet.dev/) `defunct` — Kubernetes Kubelet in Rust for running WebAssembly modules; the README states the project is no longer actively maintained and maintainers have moved on (last commit Oct 2023).
 - [BoltOps](https://www.boltops.com/) `alive` — DevOps-as-a-service.
 - [Canine](https://canine.sh/) `alive` — open source PaaS for Kubernetes; Heroku simplicity with Kubernetes power.
 - [Caprover](https://caprover.com/) `alive` — scalable, free, self-hosted PaaS.
@@ -161,7 +161,7 @@ Following providers and products are listed in alphabetical order.
 - [Coder.com](https://coder.com/) `alive` — enterprise AI development infrastructure; self-hosted environments.
 - [Codesandbox](https://codesandbox.io/) `alive` — instant cloud development environments.
 - [Codetasty](https://codetasty.com/) `defunct` — site offline.
-- [Cloud9](https://aws.amazon.com/cloud9/) `alive` — AWS browser-based IDE.
+- [Cloud9](https://aws.amazon.com/cloud9/) `defunct` — AWS browser-based IDE; closed to new customers since July 2024, existing customers only.
 - [Eclipse Che](https://www.eclipse.org/che/) `alive` — Kubernetes-native cloud IDE.
 - [Encore](https://encore.dev/) `alive` — open-source TypeScript backend framework with automated infrastructure.
 - [GitHub Codespaces](https://github.com/features/codespaces) `alive` — instant cloud-powered dev environments from GitHub.
