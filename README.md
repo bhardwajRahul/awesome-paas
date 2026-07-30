@@ -45,6 +45,7 @@ Following providers and products are listed in alphabetical order.
 - [Genezio](https://genezio.com) `alive` — full-stack development platform with type-safe client/server communication.
 - [Google Cloud AppEngine](https://cloud.google.com/appengine) `alive` — fully managed serverless platform for web and mobile backends.
 - [Google Cloud Run](https://cloud.google.com/run) `alive` — fully managed platform for containerized apps in any language.
+- [Granite](https://granite.so) `alive` — deploy apps, managed databases, and S3-compatible storage from source or Docker images; built-in container registry and unlimited team seats on every plan; formerly NoVPS, from $9/mo.
 - [Heroku](https://www.heroku.com) `alive` — original cloud application platform, acquired by Salesforce.
 - [IBM Cloud Code Engine](https://cloud.ibm.com/codeengine) `alive` — fully managed serverless platform on IBM Cloud.
 - [InstaPods](https://instapods.com) `alive` — one-command deploys for AI-built apps; $3/mo after 7-day free trial.
