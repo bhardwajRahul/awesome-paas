@@ -166,6 +166,7 @@ Following providers and products are listed in alphabetical order.
 - [Eclipse Che](https://www.eclipse.org/che/) `alive` — Kubernetes-native cloud IDE.
 - [Encore](https://encore.dev/) `alive` — open-source TypeScript backend framework with automated infrastructure.
 - [GitHub Codespaces](https://github.com/features/codespaces) `alive` — instant cloud-powered dev environments from GitHub.
+- [intentic](https://intentic.dev/) `alive` — self-hosted agent workspace; each coding agent gets its own container and git worktree on your own hardware, driven from any browser.
 - [Ona (formerly Gitpod)](https://www.gitpod.io/) `alive` — orchestrated background AI software engineers in the cloud.
 - [Okteto](https://okteto.com/) `alive` — fast, flexible Kubernetes development environments.
 - [Paizacloud](https://paiza.cloud/en/jupyter-notebook-online) `alive` — browser-based web development environment.
