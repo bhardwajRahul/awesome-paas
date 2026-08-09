@@ -91,6 +91,7 @@ Following providers and products are listed in alphabetical order.
 - [Github Pages](https://pages.github.com/) `alive` — static site hosting directly from your GitHub repository.
 - [GitLab Pages](https://docs.gitlab.com/ee/user/project/pages/) `alive` — static site hosting integrated into GitLab.
 - [Glitch](https://glitch.com/) `defunct` — collaborative web app builder; web hosting is being phased out (see [announcement](https://blog.glitch.com/post/changes-are-coming-to-glitch/)).
+- [harvis.dev](https://harvis.dev) `alive` — static hosting in one command; uploads a folder as-is and returns a live URL in seconds with no account, config, or build step. Also deployable from the browser, an HTTP API, a GitHub Action, or an AI agent over MCP.
 - [layer0](https://www.layer0.co) `defunct` — site offline; rebranded to Edgio, which itself was later acquired and wound down.
 - [Netlify](https://www.netlify.com) `alive` — Jamstack platform for production-ready web infrastructure with AI and code workflows. (Now also home to the former Gatsby Cloud.)
 - [Surge.sh](https://surge.sh) `alive` — static publishing for front-end developers; one-command deploys.
