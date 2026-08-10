@@ -517,6 +517,15 @@
     word-break: break-all;
   }
   .modal-github-link:hover { border-color: #16140f; background: #f3f1ea; }
+  .modal-github-stars {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding-left: 8px;
+    margin-left: 2px;
+    border-left: 1px solid #e9e6dc;
+    color: #6b685c;
+    white-space: nowrap;
+    word-break: normal;
+  }
 
   .modal-footer {
     flex: 0 0 auto;
@@ -599,6 +608,7 @@
       <a id="modal-github-link" class="modal-github-link" href="#" target="_blank" rel="nofollow noopener noreferrer">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55 0-.27-.01-1-.02-1.96-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.27-5.24-5.66 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.17.92-.26 1.9-.39 2.88-.39.98 0 1.96.13 2.88.39 2.2-1.48 3.16-1.17 3.16-1.17.62 1.58.23 2.75.11 3.04.74.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.37-5.25 5.65.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
         <span id="modal-github-text"></span>
+        <span id="modal-github-stars" class="modal-github-stars" style="display: none;"></span>
       </a>
     </div>
   </div>
@@ -825,11 +835,12 @@ const DATA = {
         { name: "Convox", url: "https://convox.com", status: "alive", description: "Multi-cloud PaaS with consistent deployment workflows across AWS, GCP, and on-prem." },
         { name: "Cyclic", url: "https://www.cyclic.sh/", status: "defunct", description: "Site offline. Project was acquired and shut down." },
         { name: "Dada Cloud", url: "https://cloud.dada-tuda.ru", status: "alive", description: "Russia-based PaaS with git push deploys, managed PostgreSQL, custom domains with automatic TLS, monitoring, and one-click rollback. Free plan; data hosted in Russia." },
-        { name: "Darkmoon", url: "https://github.com/ASCIT31/Dark-Moon", github: "https://github.com/ASCIT31/Dark-Moon", status: "alive", description: "Open source autonomous pentest engine (GPL-3.0) covering Active Directory, Kubernetes, and web — evidence trail on every finding; runs on local or hosted models." },
+        { name: "Darkmoon", url: "https://github.com/ASCIT31/Dark-Moon", github: "https://github.com/ASCIT31/Dark-Moon", stars: 825, status: "alive", description: "Open source autonomous pentest engine (GPL-3.0) covering Active Directory, Kubernetes, and web — evidence trail on every finding; runs on local or hosted models." },
         { name: "DeployHQ", url: "https://www.deployhq.com", status: "alive", description: "Git-based deployment automation that deploys from GitHub, GitLab, or Bitbucket to servers via SSH/SFTP/S3 — with build pipelines and one-click rollback." },
         { name: "Digitalocean App Platform", url: "https://www.digitalocean.com/products/app-platform", status: "alive", description: "DigitalOcean's managed PaaS for building, deploying, and scaling apps in just a few clicks." },
         { name: "DigitalOcean Functions", url: "https://www.digitalocean.com/products/functions", status: "alive", description: "DigitalOcean's serverless functions platform — pay-per-invocation compute." },
         { name: "Diploi", url: "https://diploi.com/", status: "alive", description: "Build apps using cloud development environments and host them online with a single click — no manual server configuration." },
+        { name: "DormHost", url: "https://dormhost.dev", status: "alive", description: "Heroku-style git push deploys for student and hobby projects — Node.js, Python, Go, Java, Ruby, PHP, .NET, or a Dockerfile, with MongoDB, PostgreSQL, or MariaDB on the same machine. Sleeps when idle and wakes in ~200ms. ₹99/mo (~$1.15) after a 7-day free trial." },
         { name: "dotCloud", url: "https://www.docker.com/docker-news-and-press/dotcloud-inc-now-docker-inc", status: "defunct", description: "Historical: dotCloud, one of the original PaaS providers, became Docker, Inc." },
         { name: "Engine Yard", url: "https://www.engineyard.com", status: "alive", description: "Managed cloud platform for Ruby on Rails and modern web applications." },
         { name: "Flightcontrol", url: "https://www.flightcontrol.dev?ref=awesome-paas", status: "alive", description: "PaaS that deploys directly to your own AWS account — no black box, lock-in, or AWS markups." },
@@ -839,6 +850,7 @@ const DATA = {
         { name: "Genezio", url: "https://genezio.com", status: "alive", description: "Full-stack development platform with type-safe client/server communication." },
         { name: "Google Cloud AppEngine", url: "https://cloud.google.com/appengine", status: "alive", description: "Fully managed serverless platform for scalable web and mobile backends in any language." },
         { name: "Google Cloud Run", url: "https://cloud.google.com/run", status: "alive", description: "Build and deploy scalable containerized apps written in any language on a fully managed platform." },
+        { name: "Granite", url: "https://granite.so", status: "alive", description: "Deploy apps, managed databases (PostgreSQL, MySQL, MongoDB, Valkey), and S3-compatible storage from source or Docker images — with a built-in private container registry and unlimited team seats on every plan. Formerly NoVPS; from $9/mo." },
         { name: "Heroku", url: "https://www.heroku.com", status: "alive", description: "Original cloud application platform — build, deploy, manage, and scale apps. Acquired by Salesforce." },
         { name: "IBM Cloud Code Engine", url: "https://cloud.ibm.com/codeengine", status: "alive", description: "Fully managed serverless platform on IBM Cloud for containers, jobs, and functions." },
         { name: "InstaPods", url: "https://instapods.com", status: "alive", description: "One-command deploys for AI-built apps (Cursor, Claude Code, Lovable, Bolt). $3/mo after 7-day free trial." },
@@ -857,7 +869,7 @@ const DATA = {
         { name: "Sevalla", url: "https://sevalla.com", status: "alive", description: "Modern application hosting platform from Kinsta." },
         { name: "Sliplane.io", url: "https://sliplane.io", status: "alive", description: "Fully managed Container as a Service platform that simplifies Docker hosting." },
         { name: "SnapDeploy", url: "https://snapdeploy.dev", status: "alive", description: "Docker container hosting on AWS. Deploy free, pay only when always on. 10 deploys/day with no credit card; always-on from $12/month." },
-        { name: "Supabase", url: "https://supabase.com", github: "https://github.com/supabase/supabase", status: "alive", description: "Open-source Postgres development platform — dedicated Postgres database for web, mobile, and AI applications." },
+        { name: "Supabase", url: "https://supabase.com", github: "https://github.com/supabase/supabase", stars: 107798, status: "alive", description: "Open-source Postgres development platform — dedicated Postgres database for web, mobile, and AI applications." },
         { name: "TinyFunction", url: "https://www.tinyfunction.com/", status: "alive", description: "Lightweight function hosting." },
         { name: "TinyStacks", url: "https://www.tinystacks.com/", status: "defunct", description: "Domain listed for sale; project no longer operating." },
         { name: "Upsun (formerly Platform.sh)", url: "https://platform.sh", status: "alive", description: "Highly flexible PaaS with predictable pricing — customize resources, runtimes, environments. Self-service developer flexibility." },
@@ -874,10 +886,10 @@ const DATA = {
       accent: "plum",
       items: [
         { name: "Adaptive", url: "https://www.adaptive.live/", status: "alive", description: "Enterprise-grade access control plane for human, workload, and AI identities in hybrid environments." },
-        { name: "AgentBox", url: "https://github.com/madarco/agentbox", github: "https://github.com/madarco/agentbox", status: "alive", description: "Run multiple coding agents (Claude Code, Codex, OpenCode) in parallel sandboxed VMs across local Docker, self-hosted, or cloud (Hetzner, Daytona, Vercel, E2B, DigitalOcean). Sub-1s checkpoints; git credentials stay on the host." },
+        { name: "AgentBox", url: "https://github.com/madarco/agentbox", github: "https://github.com/madarco/agentbox", stars: 340, status: "alive", description: "Run multiple coding agents (Claude Code, Codex, OpenCode) in parallel sandboxed VMs across local Docker, self-hosted, or cloud (Hetzner, Daytona, Vercel, E2B, DigitalOcean). Sub-1s checkpoints; git credentials stay on the host." },
         { name: "Beam Cloud", url: "https://www.beam.cloud/", status: "alive", description: "AI infrastructure for developers — sandboxes, inference, and training with ultrafast boot times and instant autoscaling." },
-        { name: "Daytona", url: "https://www.daytona.io/", github: "https://github.com/daytonaio/daytona", status: "alive", description: "Secure infrastructure for running AI-generated code with 90ms environment creation, stateful operations, and enterprise-grade security." },
-        { name: "E2B", url: "https://e2b.dev/", github: "https://github.com/e2b-dev/e2b", status: "alive", description: "Secure computers/sandboxes for AI agents with real-world tools — used by 88% of Fortune 100 companies for agentic workflows." },
+        { name: "Daytona", url: "https://www.daytona.io/", github: "https://github.com/daytonaio/daytona", stars: 72024, status: "alive", description: "Secure infrastructure for running AI-generated code with 90ms environment creation, stateful operations, and enterprise-grade security." },
+        { name: "E2B", url: "https://e2b.dev/", github: "https://github.com/e2b-dev/e2b", stars: 13342, status: "alive", description: "Secure computers/sandboxes for AI agents with real-world tools — used by 88% of Fortune 100 companies for agentic workflows." },
         { name: "Modal", url: "https://modal.com", status: "alive", description: "Serverless platform for AI and data teams — bring your own code to run CPU, GPU, and data-intensive compute at scale." },
         { name: "Runloop", url: "https://www.runloop.ai/", status: "alive", description: "AI agent accelerator — launch agents on secure code sandboxes, refine with evaluations, productionize on enterprise infrastructure." },
         { name: "RunPod", url: "https://www.runpod.io", status: "alive", description: "GPU cloud for AI training and inference workloads." },
@@ -897,10 +909,11 @@ const DATA = {
         { name: "Github Pages", url: "https://pages.github.com/", status: "alive", description: "Websites for you and your projects — hosted directly from your GitHub repository. Just edit, push, live." },
         { name: "GitLab Pages", url: "https://docs.gitlab.com/ee/user/project/pages/", status: "alive", description: "Static site hosting integrated into GitLab's CI/CD pipelines." },
         { name: "Glitch", url: "https://glitch.com/", status: "defunct", description: "Web hosting is being phased out — see the official announcement on the Glitch blog." },
+        { name: "harvis.dev", url: "https://harvis.dev", status: "alive", description: "Static hosting in one command — run npx harvis in any folder and get a live URL in seconds, with no account, config, or build step. Also deployable from the browser, an HTTP API, a GitHub Action, or an AI agent over MCP." },
         { name: "layer0", url: "https://www.layer0.co", status: "defunct", description: "Site offline; rebranded to Edgio, which itself was later acquired and wound down." },
         { name: "Netlify", url: "https://www.netlify.com", status: "alive", description: "Push your ideas to the web — create with AI or code, deploy instantly on production infrastructure. Now also home to the former Gatsby Cloud." },
         { name: "Surge.sh", url: "https://surge.sh", status: "alive", description: "Static publishing for front-end developers; one-command deploys to a global CDN." },
-        { name: "Vercel", url: "https://vercel.com", github: "https://github.com/vercel/vercel", status: "alive", description: "Build and deploy the best web experiences with the AI Cloud — frameworks, workflows, and infrastructure for a faster, more personalized web." },
+        { name: "Vercel", url: "https://vercel.com", github: "https://github.com/vercel/vercel", stars: 16067, status: "alive", description: "Build and deploy the best web experiences with the AI Cloud — frameworks, workflows, and infrastructure for a faster, more personalized web." },
       ]
     },
     {
@@ -916,7 +929,7 @@ const DATA = {
         { name: "Cloudflare Workers", url: "https://workers.cloudflare.com/", status: "alive", description: "Serverless code execution on Cloudflare's global edge network." },
         { name: "Deno Deploy", url: "https://deno.com/deploy", status: "alive", description: "Global edge platform for anything that runs with JavaScript or TypeScript." },
         { name: "Fastly Compute", url: "https://www.fastly.com/products/edge-compute", status: "alive", description: "Wasm edge computing on Fastly's global network — fast, secure, programmable delivery." },
-        { name: "Suborbital e2core (formerly Atmo)", url: "https://github.com/suborbital/e2core", github: "https://github.com/suborbital/e2core", status: "defunct", description: "Server for sandboxed third-party plugins, powered by WebAssembly. Repo dormant since Aug 2023; suborbital.dev now serves an unrelated site." },
+        { name: "Suborbital e2core (formerly Atmo)", url: "https://github.com/suborbital/e2core", github: "https://github.com/suborbital/e2core", stars: 721, status: "defunct", description: "Server for sandboxed third-party plugins, powered by WebAssembly. Repo dormant since Aug 2023; suborbital.dev now serves an unrelated site." },
         { name: "Wasmer Edge", url: "https://wasmer.io/products/edge", status: "alive", description: "WebAssembly-based edge platform for running portable workloads close to users." },
       ]
     },
@@ -929,50 +942,51 @@ const DATA = {
       items: [
         { name: "Akamai App Platform (formerly Otomi)", url: "https://otomi.io/", status: "alive", description: "Kubernetes app platform; now part of Akamai." },
         { name: "Argonaut", url: "https://argonaut.dev/", status: "defunct", description: "argonaut.dev now serves WarpBuild; the original Argonaut platform is no longer operating." },
-        { name: "Azure Krustlet", url: "https://krustlet.dev/", github: "https://github.com/krustlet/krustlet", status: "defunct", description: "Kubernetes Kubelet in Rust for running WebAssembly modules. No longer actively maintained per its own README; maintainers moved on to other WebAssembly projects (last commit Oct 2023)." },
+        { name: "Azure Krustlet", url: "https://krustlet.dev/", github: "https://github.com/krustlet/krustlet", stars: 3604, status: "defunct", description: "Kubernetes Kubelet in Rust for running WebAssembly modules. No longer actively maintained per its own README; maintainers moved on to other WebAssembly projects (last commit Oct 2023)." },
         { name: "BoltOps", url: "https://www.boltops.com/", status: "alive", description: "DevOps-as-a-service — builds and deploys customizable, scalable, secure infrastructure so you can focus on your product." },
-        { name: "Canine", url: "https://canine.sh/", status: "alive", description: "Open source PaaS for Kubernetes — deploy apps to your own cluster with the simplicity of Heroku and the power of Kubernetes." },
-        { name: "Caprover", url: "https://caprover.com/", github: "https://github.com/caprover/caprover", status: "alive", description: "Scalable, free, and self-hosted PaaS." },
+        { name: "Canine", url: "https://canine.sh/", github: "https://github.com/CanineHQ/canine", stars: 2911, status: "alive", description: "Open source PaaS for Kubernetes — deploy apps to your own cluster with the simplicity of Heroku and the power of Kubernetes." },
+        { name: "Caprover", url: "https://caprover.com/", github: "https://github.com/caprover/caprover", stars: 15125, status: "alive", description: "Scalable, free, and self-hosted PaaS." },
         { name: "Cloud Foundry", url: "https://www.cloudfoundry.org/", github: "https://github.com/cloudfoundry", status: "alive", description: "Trusted open source platform for cloud-native application development." },
-        { name: "Coolify", url: "https://coolify.io/", github: "https://github.com/coollabsio/coolify", status: "alive", description: "Self-hosting platform with superpowers — deploy apps, databases, and 280+ services. Open-source alternative to Heroku." },
+        { name: "Coolify", url: "https://coolify.io/", github: "https://github.com/coollabsio/coolify", stars: 60355, status: "alive", description: "Self-hosting platform with superpowers — deploy apps, databases, and 280+ services. Open-source alternative to Heroku." },
         { name: "Deckrun", url: "https://deckrun.com/", status: "alive", description: "Deploy and manage apps on Kubernetes with one config file and one command. No YAML, no Helm, no DevOps dependency." },
-        { name: "Devtron", url: "https://devtron.ai", github: "https://github.com/devtron-labs/devtron", status: "alive", description: "Open-source software delivery workflow for Kubernetes." },
-        { name: "Digger", url: "https://digger.dev/", status: "alive", description: "Self-hostable infrastructure tooling — Terraform CI/CD, drift detection, PR automation, and state management." },
+        { name: "Devtron", url: "https://devtron.ai", github: "https://github.com/devtron-labs/devtron", stars: 5564, status: "alive", description: "Open-source software delivery workflow for Kubernetes." },
+        { name: "Digger", url: "https://digger.dev/", github: "https://github.com/diggerhq/digger", stars: 5017, status: "alive", description: "Self-hostable infrastructure tooling — Terraform CI/CD, drift detection, PR automation, and state management." },
         { name: "Disco", url: "https://disco.cloud/", status: "alive", description: "Self-hosted Heroku alternative for teams with many services and environments — git push deploys, zero-downtime releases, automatic SSL." },
         { name: "Docker Swarm", url: "https://docs.docker.com/engine/swarm/", status: "alive", description: "Docker's built-in container orchestrator." },
-        { name: "Dokku", url: "https://dokku.com", github: "https://github.com/dokku/dokku", status: "alive", description: "The smallest PaaS implementation you've ever seen — Heroku-style git push deploys on your own server." },
-        { name: "Dokploy", url: "https://github.com/dokploy/dokploy", github: "https://github.com/dokploy/dokploy", status: "alive", description: "Open source alternative to Vercel, Netlify, and Heroku." },
+        { name: "Dokku", url: "https://dokku.com", github: "https://github.com/dokku/dokku", stars: 32105, status: "alive", description: "The smallest PaaS implementation you've ever seen — Heroku-style git push deploys on your own server." },
+        { name: "Dokploy", url: "https://github.com/dokploy/dokploy", github: "https://github.com/dokploy/dokploy", stars: 36510, status: "alive", description: "Open source alternative to Vercel, Netlify, and Heroku." },
         { name: "dyrector.io", url: "https://dyrector.io/", status: "alive", description: "Self-hosted continuous delivery & deployment platform with version management." },
         { name: "Easypanel", url: "https://easypanel.io", status: "alive", description: "Modern server control panel for deploying apps and databases." },
-        { name: "Flynn", url: "https://github.com/flynn/flynn", github: "https://github.com/flynn/flynn", status: "defunct", description: "Next-generation open source platform-as-a-service. Project is unmaintained per its README." },
+        { name: "Flynn", url: "https://github.com/flynn/flynn", github: "https://github.com/flynn/flynn", stars: 7845, status: "defunct", description: "Next-generation open source platform-as-a-service. Project is unmaintained per its README." },
         { name: "Hatchbox", url: "https://www.hatchbox.io", status: "alive", description: "Cost-effective hosting for Rails, Ruby, and Node.js — deploy to your own infrastructure." },
         { name: "Hephy", url: "https://web.teamhephy.com/", status: "defunct", description: "Site offline; community-maintained successor to Deis is no longer reachable." },
         { name: "Humanitec", url: "https://humanitec.com/", status: "alive", description: "Internal Developer Platform for the enterprise — reduce cognitive load, drive standardization, slash time to market." },
-        { name: "Kamal", url: "https://kamal-deploy.org", github: "https://github.com/basecamp/kamal", status: "alive", description: "Deploy web apps anywhere from bare metal to cloud VMs — by 37signals." },
+        { name: "Kamal", url: "https://kamal-deploy.org", github: "https://github.com/basecamp/kamal", stars: 14495, status: "alive", description: "Deploy web apps anywhere from bare metal to cloud VMs — by 37signals." },
         { name: "Knative", url: "https://knative.dev/docs/", github: "https://github.com/knative", status: "alive", description: "Kubernetes-based platform for serverless workloads." },
         { name: "Komodor", url: "https://komodor.com/", status: "alive", description: "Autonomous AI SRE platform for Kubernetes — battle-tested in enterprise-scale production environments." },
         { name: "Kubeless", url: "https://kubeless.io/", status: "defunct", description: "Site offline; project was archived." },
-        { name: "Kubernetes", url: "https://kubernetes.io/", github: "https://github.com/kubernetes/kubernetes", status: "alive", description: "Production-grade container orchestration." },
-        { name: "Kubero", url: "https://github.com/kubero-dev/kubero", github: "https://github.com/kubero-dev/kubero", status: "alive", description: "Free, self-hosted PaaS alternative to Heroku/Netlify/Coolify/Vercel/Dokku — running on Kubernetes." },
+        { name: "Kubernetes", url: "https://kubernetes.io/", github: "https://github.com/kubernetes/kubernetes", stars: 124387, status: "alive", description: "Production-grade container orchestration." },
+        { name: "Kubero", url: "https://github.com/kubero-dev/kubero", github: "https://github.com/kubero-dev/kubero", stars: 4383, status: "alive", description: "Free, self-hosted PaaS alternative to Heroku/Netlify/Coolify/Vercel/Dokku — running on Kubernetes." },
         { name: "Linx", url: "https://linx.software", status: "alive", description: "Low-code iPaaS platform for integration, API development, and business process automation." },
         { name: "Northflank", url: "https://northflank.com/", status: "alive", description: "Comprehensive developer platform designed for scale — seamlessly deploy and release any project on our cloud or yours." },
-        { name: "Openfaas", url: "https://www.openfaas.com/", github: "https://github.com/openfaas/faas", status: "alive", description: "Serverless functions made simple with Kubernetes." },
+        { name: "Openfaas", url: "https://www.openfaas.com/", github: "https://github.com/openfaas/faas", stars: 26218, status: "alive", description: "Serverless functions made simple with Kubernetes." },
+        { name: "OpenRun", url: "https://openrun.dev/", github: "https://github.com/openrundev/openrun", stars: 918, status: "alive", description: "Open source deployment platform for teams shipping internal tools — deploy web apps declaratively on a single node or on Kubernetes, with OIDC/SAML auth and RBAC built in." },
         { name: "Openshift", url: "https://www.redhat.com/en/technologies/cloud-computing/openshift", status: "alive", description: "Red Hat's unified application development platform — build, modernize, and deploy applications at scale on hybrid cloud." },
-        { name: "Piku", url: "https://github.com/piku/piku", github: "https://github.com/piku/piku", status: "alive", description: "The tiniest PaaS you've ever seen — git push deployments to your own servers." },
-        { name: "Plural", url: "https://www.plural.sh", github: "https://github.com/pluralsh/plural", status: "alive", description: "Open-source platform for deploying applications on Kubernetes." },
-        { name: "Podi", url: "https://github.com/coderofsalvation/podi", github: "https://github.com/coderofsalvation/podi", status: "alive", description: "A cute (~7kb) gitops utility to turn servers into PaaS platforms using only git+ssh." },
+        { name: "Piku", url: "https://github.com/piku/piku", github: "https://github.com/piku/piku", stars: 6599, status: "alive", description: "The tiniest PaaS you've ever seen — git push deployments to your own servers." },
+        { name: "Plural", url: "https://www.plural.sh", github: "https://github.com/pluralsh/plural", stars: 1492, status: "alive", description: "Open-source platform for deploying applications on Kubernetes." },
+        { name: "Podi", url: "https://github.com/coderofsalvation/podi", github: "https://github.com/coderofsalvation/podi", stars: 15, status: "alive", description: "A cute (~7kb) gitops utility to turn servers into PaaS platforms using only git+ssh." },
         { name: "Porter", url: "https://porter.run", status: "alive", description: "Deploy apps effortlessly to your AWS, GCP, or Azure account. SOC 2 & HIPAA compliant infrastructure with autoscaling — git to prod in 60 seconds." },
         { name: "Qovery", url: "https://www.qovery.com/", status: "alive", description: "Kubernetes management platform built for the AI era — single standardized API spoken by Terraform provider, MCP server, CLI, and AI Skill." },
         { name: "Setops", url: "https://www.setops.co/", status: "defunct", description: "Site offline." },
-        { name: "Skaffold", url: "https://skaffold.dev/", github: "https://github.com/GoogleContainerTools/skaffold", status: "alive", description: "Fast, repeatable, simple workflow for Kubernetes development." },
-        { name: "Spacecloud", url: "https://space-cloud.io/", status: "alive", description: "Instant realtime APIs for serverless apps — simplifies building serverless apps at scale." },
+        { name: "Skaffold", url: "https://skaffold.dev/", github: "https://github.com/GoogleContainerTools/skaffold", stars: 15885, status: "alive", description: "Fast, repeatable, simple workflow for Kubernetes development." },
+        { name: "Spacecloud", url: "https://space-cloud.io/", github: "https://github.com/spacecloud-io/space-cloud", stars: 3997, status: "alive", description: "Instant realtime APIs for serverless apps — simplifies building serverless apps at scale." },
         { name: "Spaceship / Shipmate", url: "https://spaceship.run", status: "alive", description: "Launch your code with one click." },
         { name: "Stacksnap", url: "https://klo.dev/stacksnap", status: "defunct", description: "Page returns 404 on klo.dev — Stacksnap is no longer available." },
         { name: "TrueFoundry", url: "https://truefoundry.com", status: "alive", description: "Enterprise-grade AI Gateway combining LLM, MCP, and Agent Gateways — connect, monitor, and govern agentic AI applications." },
-        { name: "Uncloud", url: "https://uncloud.run", status: "alive", description: "Take Docker Compose apps to production with zero-downtime deployments, automatic HTTPS, and cross-machine scaling — without Kubernetes complexity." },
+        { name: "Uncloud", url: "https://uncloud.run", github: "https://github.com/psviderski/uncloud", stars: 5441, status: "alive", description: "Take Docker Compose apps to production with zero-downtime deployments, automatic HTTPS, and cross-machine scaling — without Kubernetes complexity." },
         { name: "VMware Tanzu", url: "https://tanzu.vmware.com", status: "alive", description: "VMware's enterprise PaaS — accelerate ideas to production by simplifying and integrating processes and tools." },
-        { name: "Werf", url: "https://werf.io", github: "https://github.com/werf/werf", status: "alive", description: "GitOps tool by Flant for delivering applications to Kubernetes." },
-        { name: "ZaneOps", url: "https://zaneops.dev", status: "alive", description: "Self-hosted, open source PaaS for static sites, web apps, databases, crons, and workers — using Docker Swarm." },
+        { name: "Werf", url: "https://werf.io", github: "https://github.com/werf/werf", stars: 4715, status: "alive", description: "GitOps tool by Flant for delivering applications to Kubernetes." },
+        { name: "ZaneOps", url: "https://zaneops.dev", github: "https://github.com/zane-ops/zane-ops", stars: 1361, status: "alive", description: "Self-hosted, open source PaaS for static sites, web apps, databases, crons, and workers — using Docker Swarm." },
         { name: "Zeabur", url: "https://zeabur.com", status: "alive", description: "AI DevOps engineer — an agent that runs your infrastructure while AI writes your code." },
         { name: "Zeet", url: "https://zeet.co", status: "alive", description: "Combines CI/CD, Kubernetes management, networking, and observability into one easy-to-use dashboard for devs and SRE." },
       ]
@@ -984,17 +998,18 @@ const DATA = {
       blurb: "Browser-based dev environments and remote workspace platforms.",
       accent: "ochre",
       items: [
-        { name: "Cocalc", url: "https://cocalc.com/", status: "alive", description: "Collaborative calculation and data science platform in the browser." },
+        { name: "Cocalc", url: "https://cocalc.com/", github: "https://github.com/sagemathinc/cocalc", stars: 1288, status: "alive", description: "Collaborative calculation and data science platform in the browser." },
         { name: "Codepen", url: "https://codepen.io/", status: "alive", description: "Front-end playground for HTML, CSS, and JavaScript." },
-        { name: "Coder.com", url: "https://coder.com/", github: "https://github.com/coder/coder", status: "alive", description: "Enterprise AI development infrastructure — give developers a secure, governed environment to run AI coding agents at scale." },
+        { name: "Coder.com", url: "https://coder.com/", github: "https://github.com/coder/coder", stars: 14118, status: "alive", description: "Enterprise AI development infrastructure — give developers a secure, governed environment to run AI coding agents at scale." },
         { name: "Codesandbox", url: "https://codesandbox.io/", status: "alive", description: "Instant cloud development environments — code, collaborate, and ship projects of any size from any device." },
         { name: "Codetasty", url: "https://codetasty.com/", status: "defunct", description: "Site offline; project no longer reachable." },
         { name: "Cloud9", url: "https://aws.amazon.com/cloud9/", status: "defunct", description: "AWS browser-based IDE. No longer available to new customers as of July 2024; existing customers can continue using the service." },
-        { name: "Eclipse Che", url: "https://www.eclipse.org/che/", github: "https://github.com/eclipse-che/che", status: "alive", description: "Kubernetes-native cloud IDE." },
-        { name: "Encore", url: "https://encore.dev/", github: "https://github.com/encoredev/encore", status: "alive", description: "Open-source TypeScript backend framework for distributed systems with declarative infrastructure-as-code." },
+        { name: "Eclipse Che", url: "https://www.eclipse.org/che/", github: "https://github.com/eclipse-che/che", stars: 7154, status: "alive", description: "Kubernetes-native cloud IDE." },
+        { name: "Encore", url: "https://encore.dev/", github: "https://github.com/encoredev/encore", stars: 12223, status: "alive", description: "Open-source TypeScript backend framework for distributed systems with declarative infrastructure-as-code." },
         { name: "GitHub Codespaces", url: "https://github.com/features/codespaces", status: "alive", description: "Instant cloud-powered dev environments — spin up a fully configured environment from any GitHub repo." },
+        { name: "intentic", url: "https://intentic.dev/", status: "alive", description: "Self-hosted agent workspace — each coding agent gets its own container and git worktree on hardware you own, driven from any browser. Agents keep running when you close the tab; reopen from any device and review every diff before it lands." },
         { name: "Ona (formerly Gitpod)", url: "https://www.gitpod.io/", status: "alive", description: "Run a team of AI software engineers in the cloud — orchestrated, governed, secured at the kernel." },
-        { name: "Okteto", url: "https://okteto.com/", status: "alive", description: "Fast, flexible Kubernetes development environments — ephemeral, automated, scaling with your team." },
+        { name: "Okteto", url: "https://okteto.com/", github: "https://github.com/okteto/okteto", stars: 3533, status: "alive", description: "Fast, flexible Kubernetes development environments — ephemeral, automated, scaling with your team." },
         { name: "Paizacloud", url: "https://paiza.cloud/en/jupyter-notebook-online", status: "alive", description: "Browser-based web development environment for Rails, PHP, Java, Django, Node.js, and more." },
         { name: "Release", url: "https://release.com/", status: "alive", description: "Vercel-style git-push deploys for full-stack apps in your own cloud — perfect for teams leaving Heroku or outgrowing Vercel's serverless limits." },
         { name: "Replit", url: "https://replit.com/", status: "alive", description: "Build and deploy software collaboratively with the power of AI — without spending a second on setup." },
@@ -1034,6 +1049,15 @@ function inferGithub(item) {
   } catch {}
   return null;
 }
+
+function formatStars(n) {
+  if (typeof n !== 'number' || !isFinite(n) || n < 0) return null;
+  if (n < 1000) return String(n);
+  const k = n / 1000;
+  return (k < 10 ? k.toFixed(1).replace(/\.0$/, '') : Math.round(k)) + 'k';
+}
+
+const STAR_SVG = '<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 5.88 6.5.95-4.7 4.58 1.11 6.46L12 17.32l-5.81 3.05 1.11-6.46-4.7-4.58 6.5-.95z"/></svg>';
 
 function setBuildDate() {
   const now = new Date();
@@ -1087,6 +1111,7 @@ function render() {
       const d = domainOf(item.url);
       const fi = favicon(item.url);
       const ini = initials(item.name);
+      const st = formatStars(item.stars);
       tiles += `
         <a href="${escapeAttr(item.url)}"
            rel="nofollow noopener noreferrer"
@@ -1101,7 +1126,10 @@ function render() {
             </div>
             <div class="flex-1 min-w-0">
               <div class="tile-name text-[13px] font-semibold leading-tight text-ink-900 truncate">${item.name}</div>
-              <div class="font-mono mono-tight text-[10px] text-ink-400 truncate mt-0.5">${d}</div>
+              <div class="flex items-center gap-1.5 mt-0.5 min-w-0">
+                <span class="font-mono mono-tight text-[10px] text-ink-400 truncate">${d}</span>
+                ${st ? `<span class="tile-stars font-mono mono-tight nums text-[10px] text-ink-400 inline-flex items-center gap-0.5 flex-shrink-0" title="${item.stars.toLocaleString('en-US')} GitHub stars">${STAR_SVG}${st}</span>` : ''}
+              </div>
             </div>
             <svg class="tile-arrow opacity-0 text-ink-700 flex-shrink-0" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
           </div>
@@ -1319,6 +1347,15 @@ function openModal(item, cat) {
   if (gh) {
     document.getElementById('modal-github-link').href = gh;
     document.getElementById('modal-github-text').textContent = gh.replace(/^https?:\/\/(www\.)?/, '');
+    const starsEl = document.getElementById('modal-github-stars');
+    const st = formatStars(item.stars);
+    if (st) {
+      starsEl.innerHTML = `${STAR_SVG}<span class="nums">${st}</span>`;
+      starsEl.title = `${item.stars.toLocaleString('en-US')} GitHub stars`;
+      starsEl.style.display = '';
+    } else {
+      starsEl.style.display = 'none';
+    }
     ghBlock.style.display = '';
   } else {
     ghBlock.style.display = 'none';
