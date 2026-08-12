@@ -37,7 +37,7 @@ Following providers and products are listed in alphabetical order.
 - [DigitalOcean Functions](https://www.digitalocean.com/products/functions) `alive` — DigitalOcean's serverless functions platform.
 - [Diploi](https://diploi.com/) `alive` — cloud development environments with one-click hosting; no manual server configuration.
 - [Darkmoon](https://github.com/ASCIT31/Dark-Moon) `alive` — open source autonomous pentest engine (GPL-3.0): AD + Kubernetes + web, evidence trail on every finding, runs on local or hosted models.
-- [DormHost](https://dormhost.dev) `alive` — Heroku-style git push deploys for student and hobby projects; Node.js, Python, Go, Java, Ruby, PHP, .NET, or a Dockerfile, with MongoDB/PostgreSQL/MariaDB on the same machine; ₹99/mo (~$1.15), 7-day free trial, sleeps when idle and wakes in ~200ms.
+- [DormHost](https://dormhost.dev) `alive`: Heroku-style git push deploys for student and hobby projects; Node.js, Python, Go, Java, Ruby, PHP, .NET, or a Dockerfile, with MongoDB/PostgreSQL/MySQL on the same machine; ₹99/mo (~$1.14), 30-day free trial, sleeps when idle and wakes in ~300ms.
 - [dotCloud](https://www.docker.com/docker-news-and-press/dotcloud-inc-now-docker-inc) `defunct` — historical; dotCloud became Docker, Inc.
 - [Engine Yard](https://www.engineyard.com) `alive` — managed cloud platform for Ruby on Rails and modern web apps.
 - [Flightcontrol](https://www.flightcontrol.dev?ref=awesome-paas) `alive` — PaaS that deploys directly to your own AWS account; no black box, lock-in, or AWS markups.
