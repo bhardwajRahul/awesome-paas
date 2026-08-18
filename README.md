@@ -152,6 +152,7 @@ Following providers and products are listed in alphabetical order.
 - [Spacecloud](https://space-cloud.io/) `alive` — instant realtime APIs for serverless apps.
 - [Spaceship / Shipmate](https://spaceship.run) `alive` — one-click code launcher.
 - [Stacksnap](https://klo.dev/stacksnap) `defunct` — page returns 404 on klo.dev.
+- [Temps](https://temps.sh) `alive` — self-hosted PaaS bundling deploys, analytics, error tracking and session replay in one Rust binary.
 - [TrueFoundry](https://truefoundry.com) `alive` — enterprise-grade AI Gateway combining LLM, MCP, and Agent Gateways.
 - [Uncloud](https://uncloud.run) `alive` — production self-hosting for Docker Compose apps without Kubernetes complexity.
 - [VMware Tanzu](https://tanzu.vmware.com) `alive` — VMware's enterprise PaaS for accelerating ideas to production.
