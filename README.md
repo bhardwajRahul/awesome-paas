@@ -18,6 +18,7 @@ Following providers and products are listed in alphabetical order.
 - [Adios](https://www.adios.dev/) `alive` — AI app development and hosting platform with ai workspaces, previews, logs, and health-checked production deployments.
 - [Acquia Cloud](https://www.acquia.com) `alive` — Drupal-focused cloud platform for digital experiences.
 - [ApexWeave](https://apexweave.com) `alive` — Heroku-style PaaS with git push deploys, managed databases, and WordPress hosting; 14-day free trial, no credit card required.
+- [AppLaunch](https://applaunch.org/docker-hosting) `alive` — managed Docker Compose platform with GitHub auto-deploy, persistent volumes, public ports, custom domains, logs, and backups.
 - [Appliku](https://appliku.com) `alive` — modern application deployment platform; deploy unlimited apps and databases for one monthly price via git push.
 - [apply.build](https://apply.build) `alive` — European PaaS with WAF, vulnerability scanning, metrics, and logs included in every plan.
 - [Aptible](https://aptible.com) `alive` — secure, HITRUST R2 certified cloud infrastructure for digital health teams.
